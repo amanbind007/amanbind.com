@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { DEFAULT_THEME, STORAGE_KEY } from '../data/themes';
 
 interface Props {
   title?: string;
@@ -11,13 +12,26 @@ const pageTitle = title ? `${title} — Aman Bind` : 'Aman Bind';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme={DEFAULT_THEME}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+
+    {/* Applies the stored filter before first paint so the page never flashes the default palette. */}
+    <script is:inline define:vars={{ storageKey: STORAGE_KEY, fallback: DEFAULT_THEME }}>
+      (function () {
+        var chosen;
+        try {
+          chosen = localStorage.getItem(storageKey);
+        } catch (e) {
+          chosen = null;
+        }
+        document.documentElement.dataset.theme = chosen || fallback;
+      })();
+    </script>
   </head>
   <body>
     <main>
