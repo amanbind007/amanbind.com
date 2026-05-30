@@ -16,6 +16,41 @@
   --accent4: #a9dc76; --accent5: #78dce8; --accent6: #ab9df2;
 }
 
+[data-theme="octagon"] {
+  --base1: #161821; --base2: #1e1f2b; --base3: #282a3a; --base4: #3a3d4b;
+  --base5: #535763; --base6: #696d77; --base7: #b2b9bd; --base8: #eaf2f1;
+  --accent1: #ff657a; --accent2: #ff9b5e; --accent3: #ffd76d;
+  --accent4: #bad761; --accent5: #9cd1bb; --accent6: #c39ac9;
+}
+
+[data-theme="machine"] {
+  --base1: #161b1d; --base2: #1d2528; --base3: #273136; --base4: #3a4449;
+  --base5: #545f62; --base6: #6b7678; --base7: #b8c4c3; --base8: #f2fffc;
+  --accent1: #ff6d7e; --accent2: #ffb270; --accent3: #ffed72;
+  --accent4: #a2e57b; --accent5: #7cd5f1; --accent6: #baa0f8;
+}
+
+[data-theme="ristretto"] {
+  --base1: #191415; --base2: #211c1c; --base3: #2c2525; --base4: #403838;
+  --base5: #5b5353; --base6: #72696a; --base7: #c3b7b8; --base8: #fff1f3;
+  --accent1: #fd6883; --accent2: #f38d70; --accent3: #f9cc6c;
+  --accent4: #adda78; --accent5: #85dacc; --accent6: #a8a9eb;
+}
+
+[data-theme="spectrum"] {
+  --base1: #141414; --base2: #191919; --base3: #222222; --base4: #363537;
+  --base5: #525053; --base6: #69676c; --base7: #bab6c0; --base8: #f7f1ff;
+  --accent1: #fc618d; --accent2: #fd9353; --accent3: #fce566;
+  --accent4: #7bd88f; --accent5: #5ad4e6; --accent6: #948ae3;
+}
+
+[data-theme="pacific"] {
+  --base1: #1a2023; --base2: #1f2529; --base3: #293136; --base4: #3b4449;
+  --base5: #545f62; --base6: #6b7678; --base7: #b8c4c3; --base8: #f2fffc;
+  --accent1: #ff6d7e; --accent2: #ffb270; --accent3: #ffed72;
+  --accent4: #6bd66b; --accent5: #7cd5f1; --accent6: #baa0f8;
+}
+
 /* ------------------------------------------------------------------
    Semantic tokens — dark filters.
    ------------------------------------------------------------------ */
