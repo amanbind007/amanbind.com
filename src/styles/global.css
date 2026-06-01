@@ -81,6 +81,33 @@
   color-scheme: dark;
 }
 
+/* ------------------------------------------------------------------
+   Monokai Pro Light Sun — the one light filter. Roles invert: the page
+   sits on the lightest bases and text drops to base8.
+   ------------------------------------------------------------------ */
+
+[data-theme="sun"] {
+  --base1: #fcfaf6; --base2: #f8efe7; --base3: #f2e6dc; --base4: #e6dcd2;
+  --base5: #c1b6ab; --base6: #a59c9c; --base7: #6a5f6b; --base8: #2c232e;
+  --accent1: #ce4770; --accent2: #d4572b; --accent3: #b16803;
+  --accent4: #218871; --accent5: #1e6fcc; --accent6: #6851a2;
+
+  --c-bg: var(--base1);
+  --c-bg-deep: var(--base3);
+  --c-surface: var(--base2);
+  --c-surface-raised: #ffffff;
+  --c-border: color-mix(in oklab, var(--base5) 60%, transparent);
+  --c-border-strong: var(--base5);
+  --c-text: var(--base8);
+  --c-text-dim: var(--base7);
+  --c-text-faint: var(--base6);
+
+  --shadow-card: 0 1px 2px rgb(44 35 46 / 0.06), 0 8px 24px -14px rgb(44 35 46 / 0.22);
+  --shadow-lift: 0 2px 6px rgb(44 35 46 / 0.08), 0 20px 40px -22px rgb(44 35 46 / 0.3);
+
+  color-scheme: light;
+}
+
 /* Expose the tokens to Tailwind's utility generator. */
 @theme inline {
   --color-bg: var(--c-bg);
