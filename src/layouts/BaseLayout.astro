@@ -23,13 +23,18 @@ const pageTitle = title ? `${title} — Aman Bind` : 'Aman Bind';
     {/* Applies the stored filter before first paint so the page never flashes the default palette. */}
     <script is:inline define:vars={{ storageKey: STORAGE_KEY, fallback: DEFAULT_THEME }}>
       (function () {
+        var valid = ['classic', 'octagon', 'machine', 'ristretto', 'spectrum', 'pacific', 'sun'];
         var chosen;
         try {
           chosen = localStorage.getItem(storageKey);
         } catch (e) {
           chosen = null;
         }
-        document.documentElement.dataset.theme = chosen || fallback;
+        if (valid.indexOf(chosen) === -1) {
+          var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+          chosen = prefersLight ? 'sun' : fallback;
+        }
+        document.documentElement.dataset.theme = chosen;
       })();
     </script>
   </head>
