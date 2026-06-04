@@ -1,0 +1,105 @@
+---
+import ThemeSwitcher from '../islands/ThemeSwitcher';
+import { nav, site } from '../data/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => {
+  if (href.startsWith('/#')) return path === '/';
+  return path === href || path.startsWith(`${href}/`);
+};
+---
+
+<header
+  class="sticky top-0 z-40 border-b backdrop-blur-xl"
+  style="border-color: var(--c-border); background: color-mix(in oklab, var(--c-bg) 82%, transparent);"
+>
+  <div class="shell flex h-16 items-center justify-between gap-4">
+    <a href="/" class="group flex items-center gap-2.5 font-mono text-sm font-semibold">
+      <span
+        class="grid h-8 w-8 place-items-center rounded-lg border text-xs"
+        style="border-color: var(--c-border-strong); background: var(--c-bg-deep); color: var(--c-accent);"
+      >AB</span>
+      <span class="hidden sm:block">
+        <span style="color: var(--c-text);">aman</span><span style="color: var(--c-text-faint);">bind</span><span
+          style="color: var(--c-accent);">.com</span>
+      </span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-1">
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="rounded-lg px-3 py-1.5 text-sm transition-colors hover:bg-[var(--c-surface)]"
+              style={`color: ${isActive(item.href) ? 'var(--c-text)' : 'var(--c-text-dim)'};`}
+              aria-current={isActive(item.href) && !item.href.includes('#') ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={site.resumePath}
+        class="hidden rounded-lg border px-3 py-1.5 text-xs font-medium sm:block"
+        style="border-color: var(--c-border); color: var(--c-text-dim); background: var(--c-surface);"
+      >
+        Résumé
+      </a>
+      <ThemeSwitcher client:load />
+
+      <button
+        type="button"
+        id="nav-toggle"
+        class="grid h-9 w-9 place-items-center rounded-lg border md:hidden"
+        style="border-color: var(--c-border); background: var(--c-surface);"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M2 4h12M2 8h12M2 12h12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-nav" aria-label="Mobile" hidden class="border-t md:hidden" style="border-color: var(--c-border);">
+    <ul class="shell flex flex-col py-3">
+      {nav.map((item) => (
+        <li>
+          <a href={item.href} class="block py-2.5 text-sm" style="color: var(--c-text-dim);">{item.label}</a>
+        </li>
+      ))}
+      <li>
+        <a href={site.resumePath} class="block py-2.5 text-sm" style="color: var(--c-accent);">Résumé</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script is:inline>
+  (function () {
+    var toggle = document.getElementById('nav-toggle');
+    var panel = document.getElementById('mobile-nav');
+    if (!toggle || !panel) return;
+
+    toggle.addEventListener('click', function () {
+      var open = panel.hasAttribute('hidden');
+      if (open) panel.removeAttribute('hidden');
+      else panel.setAttribute('hidden', '');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+
+    panel.addEventListener('click', function (event) {
+      if (event.target.tagName === 'A') {
+        panel.setAttribute('hidden', '');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+</script>
