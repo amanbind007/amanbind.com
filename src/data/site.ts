@@ -8,6 +8,7 @@ export const site = {
   location: 'Bengaluru, Karnataka, India',
   email: 'amanbind007@gmail.com',
   resumePath: '/resume.pdf',
+  availability: 'Open to Platform / DevSecOps / SRE / Cloud Architect roles',
   socials: {
     github: 'https://github.com/amanbind007',
     linkedin: 'https://www.linkedin.com/in/amanbind',
