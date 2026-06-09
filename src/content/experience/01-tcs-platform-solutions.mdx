@@ -1,0 +1,54 @@
+---
+company: "Tata Consultancy Services"
+companyUrl: "https://www.tcs.com/"
+role: "DevOps & Platform Engineer"
+team: "Platform Solutions — TCS Enterprise Manager"
+location: "Bengaluru, Karnataka"
+start: "Jan 2024"
+end: "Present"
+current: true
+order: 30
+summary: "Rebuilt release engineering for an enterprise ITSM/ITOM product — 70+ microservices moved off SVN and manual deploys onto GitLab, Jenkins and policy-as-code."
+stack:
+  - Jenkins
+  - GitLab CE
+  - Docker
+  - Kubernetes
+  - Ansible
+  - Terraform
+  - OpenTelemetry
+  - OpenSearch
+  - Prometheus
+  - Grafana
+  - SonarQube
+  - Veracode
+  - WSO2
+  - OpenProject
+  - AWS
+highlights:
+  - "Designed and shipped the CI/CD strategy for the whole business unit — branching model, delivery model, environment promotion and deployment gates for 70+ microservices and 5+ frontends across different frameworks."
+  - "Cut deployment downtime from ~60 minutes to ~10 minutes, and production revert from ~60 minutes to under 30 seconds; releases moved from a fixed weekly Thursday window to on-demand."
+  - "Evaluated and rolled out GitLab CE to replace SVN across the unit, then led the code migration, DevSecOps guidelines and knowledge transfer for engineers and senior stakeholders."
+  - "Built Jenkins pipelines for deployment, auto-merge, merge evaluation, scheduled backup and one-click revert — every one of these had previously been a manual, review-free process."
+  - "Encoded server and deployment governance as YAML checked in beside each microservice: who may deploy, which environments are permissible, and which promotion paths are legal."
+  - "Delivered a no-code observability stack on OpenTelemetry, otelcol and OpenSearch that correlates metrics, logs and traces into automated root-cause analysis — later productised into the platform's APM module."
+  - "Stood up Prometheus and Grafana for infrastructure and application monitoring with automated remediation, e.g. a disk-usage alert fires a webhook that triggers a Jenkins job to prune old backups and clean workspaces."
+  - "Ran the IP & OSS audit for the product using FlexNet Code Insight — made the licensing case, executed the scans, reviewed findings and removed GPL and commercial dependencies from the codebase."
+  - "Supported other Platform Solutions teams through their own SVN-to-GitLab migrations and advised their DevOps engineers on automation architecture."
+  - "On-call for production infrastructure; currently building the product's cross-platform mobile client in Flutter."
+---
+
+TCS Enterprise Manager is an internal IP asset under the Platform Solutions
+unit — an enterprise platform in the same space as ServiceNow, covering ITSM,
+ITIM, ITAM, APM and ITGSM.
+
+I joined the team as a mobile developer and moved into a DevOps role when the
+unit set out to modernise product delivery. Two of us were asked to take the
+whole unit from SVN and manual, unreviewed deployments to a real CI/CD practice.
+
+That meant designing the delivery model rather than just wiring tools together:
+which branches exist and what they mean, what a merge has to prove before it
+lands, how an environment is promoted, who is allowed to deploy where, and what
+happens at 2am when a release goes wrong. The revert pipeline mattered as much
+as the deploy pipeline — being able to undo a release in seconds is what made
+the team comfortable releasing whenever they wanted to.
