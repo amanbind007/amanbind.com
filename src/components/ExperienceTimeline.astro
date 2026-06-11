@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+
+const roles = (await getCollection('experience')).sort((a, b) => b.data.order - a.data.order);
+---
+
+<ol class="relative space-y-4">
+  {roles.map((role, i) => (
+    <li class="scroll-reveal" style={`transition-delay: ${i * 80}ms;`}>
+      <article class="card p-6 sm:p-8">
+        <header class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+              <h3 class="text-lg font-semibold" style="color: var(--c-text);">{role.data.role}</h3>
+              {role.data.current && (
+                <span
+                  class="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-mono text-[0.65rem]"
+                  style="color: var(--c-ok); background: color-mix(in oklab, var(--c-ok) 15%, transparent);"
+                >
+                  <span class="h-1.5 w-1.5 rounded-full" style="background: var(--c-ok);"></span>
+                  current
+                </span>
+              )}
+            </div>
+
+            <p class="mt-1.5 text-sm" style="color: var(--c-text-dim);">
+              {role.data.companyUrl ? (
+                <a href={role.data.companyUrl} target="_blank" rel="noopener"
+                   class="font-medium underline underline-offset-4" style="color: var(--c-accent);">
+                  {role.data.company}
+                </a>
+              ) : (
+                <span class="font-medium" style="color: var(--c-accent);">{role.data.company}</span>
+              )}
+              {role.data.team && <span style="color: var(--c-text-faint);"> · {role.data.team}</span>}
+            </p>
+          </div>
+
+          <div class="shrink-0 sm:text-right">
+            <p class="font-mono text-xs" style="color: var(--c-text-dim);">
+              {role.data.start} — {role.data.end}
+            </p>
+            <p class="mt-1 font-mono text-xs" style="color: var(--c-text-faint);">{role.data.location}</p>
+          </div>
+        </header>
+
+        <p class="mt-5 text-sm leading-relaxed" style="color: var(--c-text-dim);">{role.data.summary}</p>
+
+        <ul class="mt-5 space-y-2.5">
+          {role.data.highlights.map((point) => (
+            <li class="relative pl-5 text-sm leading-relaxed" style="color: var(--c-text-dim);">
+              <span class="absolute left-0 top-[0.55em] h-1 w-1 rounded-full" style="background: var(--c-accent);"></span>
+              {point}
+            </li>
+          ))}
+        </ul>
+
+        <ul class="mt-6 flex flex-wrap gap-1.5 border-t pt-5" style="border-color: var(--c-border);">
+          {role.data.stack.map((tech) => (
+            <li class="rounded border px-1.5 py-0.5 font-mono text-[0.68rem]"
+                style="border-color: var(--c-border); color: var(--c-text-faint);">
+              {tech}
+            </li>
+          ))}
+        </ul>
+      </article>
+    </li>
+  ))}
+</ol>
