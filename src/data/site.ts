@@ -3,6 +3,14 @@ export const site = {
   domain: 'amanbind.com',
   url: 'https://amanbind.com',
   role: 'Platform & DevSecOps Engineer',
+  // Rotated by the hero typewriter.
+  roles: [
+    'Platform & DevSecOps Engineer',
+    'CI/CD & Release Automation',
+    'AWS Solutions Architect (Pro)',
+    'Observability & SRE',
+    'iOS / SwiftUI Developer',
+  ],
   tagline:
     'I build the delivery machinery that lets product teams ship without fear — pipelines, observability, and cloud architecture.',
   location: 'Bengaluru, Karnataka, India',
