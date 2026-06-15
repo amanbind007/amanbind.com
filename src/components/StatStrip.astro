@@ -1,0 +1,25 @@
+---
+import { impactStats } from '../data/site';
+
+const toneVar: Record<string, string> = {
+  accent: 'var(--c-accent)',
+  ok: 'var(--c-ok)',
+  info: 'var(--c-info)',
+  warn: 'var(--c-warn)',
+};
+---
+
+<dl class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border lg:grid-cols-4"
+    style="border-color: var(--c-border); background: var(--c-border);">
+  {impactStats.map((stat) => (
+    <div class="px-5 py-6" style="background: var(--c-surface);">
+      <dt class="font-mono text-[0.7rem] uppercase tracking-[0.12em]" style="color: var(--c-text-faint);">
+        {stat.label}
+      </dt>
+      <dd class="mt-2 font-mono text-lg font-semibold tabular-nums sm:text-xl"
+          style={`color: ${toneVar[stat.tone] ?? 'var(--c-text)'};`}>
+        {stat.value}
+      </dd>
+    </div>
+  ))}
+</dl>

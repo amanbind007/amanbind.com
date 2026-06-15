@@ -1,15 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ExperienceTimeline from '../components/ExperienceTimeline.astro';
 import { site } from '../data/site';
 ---
 
 <BaseLayout description={site.tagline}>
-  <section class="shell py-24">
-    <h1 class="text-5xl font-semibold tracking-tight" style="color: var(--c-text);">Aman Bind</h1>
-    <p class="mt-4 text-lg" style="color: var(--c-text-dim);">{site.tagline}</p>
-  </section>
+  <Hero />
 
   <section class="shell py-8 sm:py-12">
     <SectionHeading

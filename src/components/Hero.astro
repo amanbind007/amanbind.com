@@ -1,0 +1,68 @@
+---
+import Typewriter from '../islands/Typewriter';
+import StatStrip from './StatStrip.astro';
+import { site } from '../data/site';
+---
+
+<section class="relative overflow-hidden">
+  <div class="grid-veil pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
+  <div
+    class="pointer-events-none absolute left-1/2 top-0 -z-10 h-[28rem] w-[52rem] -translate-x-1/2 rounded-full blur-3xl"
+    style="background: var(--c-glow); opacity: 0.5;"
+    aria-hidden="true"
+  ></div>
+
+  <div class="shell pt-20 pb-16 sm:pt-28 sm:pb-20">
+    <p class="rise eyebrow" style="animation-delay: 40ms;">{site.location}</p>
+
+    <h1
+      class="rise mt-5 text-4xl font-semibold tracking-tight sm:text-6xl lg:text-7xl"
+      style="animation-delay: 100ms; color: var(--c-text);"
+    >
+      Aman Bind
+    </h1>
+
+    <p
+      class="rise mt-4 font-mono text-lg sm:text-2xl"
+      style="animation-delay: 160ms; color: var(--c-text-dim); min-height: 2rem;"
+    >
+      <span style="color: var(--c-text-faint);">$</span>{' '}
+      <Typewriter client:load phrases={site.roles} />
+    </p>
+
+    <p
+      class="rise mt-8 max-w-2xl text-lg leading-relaxed"
+      style="animation-delay: 220ms; color: var(--c-text-dim);"
+    >
+      {site.tagline}
+    </p>
+
+    <div class="rise mt-10 flex flex-wrap items-center gap-3" style="animation-delay: 280ms;">
+      <a
+        href="/projects"
+        class="rounded-lg px-5 py-2.5 text-sm font-semibold transition-transform hover:-translate-y-0.5"
+        style="background: var(--c-accent); color: var(--c-bg-deep);"
+      >
+        See the work
+      </a>
+      <a
+        href={site.resumePath}
+        class="rounded-lg border px-5 py-2.5 text-sm font-medium transition-colors hover:border-[var(--c-border-strong)]"
+        style="border-color: var(--c-border); color: var(--c-text-dim); background: var(--c-surface);"
+      >
+        Download résumé
+      </a>
+      <a
+        href={site.socials.email}
+        class="px-2 py-2.5 text-sm font-medium underline underline-offset-4"
+        style="color: var(--c-info);"
+      >
+        Get in touch
+      </a>
+    </div>
+
+    <div class="rise mt-16" style="animation-delay: 340ms;">
+      <StatStrip />
+    </div>
+  </div>
+</section>
