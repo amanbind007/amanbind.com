@@ -1,0 +1,66 @@
+---
+title: "CI/CD Delivery Platform for 70+ Microservices"
+category: "platform"
+period: "2024 — Present"
+summary: "Replaced a manual, review-free SVN release process with a governed Jenkins + GitLab pipeline suite covering build, merge evaluation, deployment, backup and sub-minute revert."
+metrics:
+  - { value: "60m → 10m", label: "Deploy downtime" }
+  - { value: "60m → <30s", label: "Revert time" }
+  - { value: "70+", label: "Microservices" }
+  - { value: "Weekly → on-demand", label: "Release cadence" }
+stack: ["Jenkins", "GitLab CE", "Groovy", "Docker", "Ansible", "Bash", "YAML"]
+proprietary: true
+featured: true
+order: 100
+---
+
+## The situation
+
+TCS Enterprise Manager is a large ITSM/ITOM platform: 70+ backend microservices
+and five-plus frontends written against different frameworks. When I joined the
+team, all of it lived in SVN and shipped by hand.
+
+Every Thursday, someone deployed. There was no code review gate, no automated
+evaluation of a merge, no backup step you could rely on, and no revert path
+short of redeploying the previous artefact by hand. A bad release cost roughly
+an hour of downtime, and so did undoing one.
+
+## What we built
+
+Another engineer and I were asked to take the unit to a CI/CD model. We treated
+it as a delivery-design problem first and a tooling problem second.
+
+**Branching and delivery model.** Before any pipeline existed, we wrote down
+what branches mean, what a merge has to prove, how an environment gets promoted,
+and who signs off on what. Every pipeline afterwards was an implementation of
+that document.
+
+**Merge evaluation pipelines.** A merge request now has to pass build, static
+analysis and security scanning before it is eligible. Auto-merge pipelines
+handle the mechanical merges that used to consume review time.
+
+**Deployment pipelines.** Parameterised per microservice, with the deploy
+sequence, health checks and rollback trigger encoded rather than remembered.
+We stopped using Jenkins' default workspaces entirely — the pipelines were
+sophisticated enough that we managed and cleaned their working directories
+ourselves.
+
+**Backup and revert pipelines.** The one that changed behaviour most. A revert
+went from a nervous hour of manual work to a single pipeline run that finishes
+in well under thirty seconds. Once reverting became cheap, the team stopped
+batching changes into a weekly window and started deploying whenever a change
+was ready.
+
+## Governance as code
+
+Each microservice carries a YAML descriptor next to its source declaring who is
+permitted to deploy it, which environments are legal targets, and which
+promotion paths are allowed. Server and infrastructure configuration is managed
+the same way. Access questions became diffs in a merge request instead of a
+conversation in a chat window.
+
+## Result
+
+Deployment downtime fell from about an hour to about ten minutes. Reverts fell
+from an hour to under thirty seconds. The fixed weekly release window is gone.
+The same model has since been adapted by other Platform Solutions teams.
