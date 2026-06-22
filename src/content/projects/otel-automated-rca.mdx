@@ -1,0 +1,41 @@
+---
+title: "No-Code Observability & Automated RCA"
+category: "observability"
+period: "2024 — 2025"
+summary: "An OpenTelemetry, otelcol and OpenSearch pipeline that correlates metrics, logs and traces into automated root-cause analysis — proven on our own platform, then productised into the APM module we ship."
+metrics:
+  - { value: "Zero", label: "Application code changes" }
+  - { value: "3 signals", label: "Metrics · logs · traces" }
+  - { value: "Shipped", label: "Into product APM module" }
+stack: ["OpenTelemetry", "otelcol", "OpenSearch", "Jaeger-compatible tracing", "Docker"]
+proprietary: true
+featured: true
+order: 90
+---
+
+## The constraint
+
+We needed distributed tracing and observability across the microservice estate,
+with one hard requirement: **no code changes**. Asking 70+ services to adopt an
+SDK was not going to happen, and a solution that required it would have died in
+review.
+
+## The approach
+
+OpenTelemetry auto-instrumentation gave us signal without touching application
+source. The OpenTelemetry Collector (`otelcol`) sat in front as the routing and
+processing layer, and OpenSearch became the store and query surface for all
+three signal types.
+
+The interesting part was not collecting the telemetry — it was correlating it.
+Metrics tell you something degraded, traces tell you where the request spent its
+time, and logs tell you what the code thought it was doing. Joined on trace and
+span identity, those three become an automated first-pass root-cause analysis
+instead of three dashboards a human has to reconcile at 2am.
+
+## Where it went
+
+We ran it against our own platform first, which is the only honest way to
+evaluate an observability product. It worked well enough that the same approach
+was implemented in the APM module of TCS Enterprise Manager — the internal POC
+became a shipped product capability.

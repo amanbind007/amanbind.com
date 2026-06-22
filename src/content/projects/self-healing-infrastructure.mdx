@@ -1,0 +1,32 @@
+---
+title: "Self-Healing Infrastructure Monitoring"
+category: "observability"
+period: "2024 — 2025"
+summary: "Prometheus and Grafana across infrastructure and applications, wired to webhook-triggered Jenkins remediation jobs so routine incidents resolve themselves before anyone is paged."
+metrics:
+  - { value: "Auto", label: "Remediation for routine alerts" }
+  - { value: "24/7", label: "Production on-call coverage" }
+stack: ["Prometheus", "Grafana", "Alertmanager", "Jenkins", "Webhooks", "Bash", "Ansible"]
+proprietary: true
+order: 85
+---
+
+## Monitoring that does something
+
+Dashboards that only page a human are a half-finished system. Once Prometheus
+and Grafana were covering both infrastructure and application metrics, the
+obvious next step was to close the loop on the alerts whose fix is always the
+same.
+
+The canonical example: server disk usage crosses 70%. Instead of paging me, the
+alert fires a webhook that triggers a Jenkins pipeline which prunes the oldest
+backups and cleans out the Jenkins workspace directories. The incident resolves
+itself and leaves an audit trail of what ran and why.
+
+The rule I applied when deciding what to automate was simple — if the runbook
+for an alert has no decision in it, it should not need a human.
+
+## On-call
+
+I also hold the production on-call rotation for the platform's servers, which
+is a strong incentive to keep expanding the set of alerts that fix themselves.
