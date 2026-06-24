@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.order - a.data.order);
+
+const groups = [
+  { id: 'all', label: 'All' },
+  { id: 'platform', label: 'Platform' },
+  { id: 'observability', label: 'Observability' },
+  { id: 'cloud', label: 'Cloud' },
+  { id: 'ios', label: 'iOS' },
+  { id: 'ml', label: 'ML' },
+  { id: 'homelab', label: 'Homelab' },
+].filter((g) => g.id === 'all' || projects.some((p) => p.data.category === g.id));
+---
+
+<BaseLayout
+  title="Projects"
+  description="Platform engineering, observability and cloud case studies, plus the SwiftUI and CoreML apps that came first."
+>
+  <section class="shell pt-16 pb-10 sm:pt-24">
+    <SectionHeading
+      eyebrow="Projects"
+      title="Everything, in one place"
+      lede="Internal platform work is written up as case studies since the code isn't public. The open-source iOS and ML projects link straight to their repositories."
+    />
+
+    <div class="mt-10 flex flex-wrap gap-2" role="group" aria-label="Filter projects by category">
+      {groups.map((group, i) => (
+        <button
+          type="button"
+          class="filter-chip rounded-lg border px-3.5 py-1.5 font-mono text-xs transition-colors cursor-pointer"
+          data-filter={group.id}
+          aria-pressed={i === 0 ? 'true' : 'false'}
+          style={
+            i === 0
+              ? 'border-color: var(--c-accent); background: color-mix(in oklab, var(--c-accent) 16%, transparent); color: var(--c-accent);'
+              : 'border-color: var(--c-border); background: var(--c-surface); color: var(--c-text-dim);'
+          }
+        >
+          {group.label}
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <section class="shell pb-20">
+    <ul id="project-grid" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map((project, i) => (
+        <li
+          class="project-item scroll-reveal relative"
+          data-category={project.data.category}
+          style={`transition-delay: ${Math.min(i, 8) * 55}ms;`}
+        >
+          <ProjectCard project={project} compact />
+        </li>
+      ))}
+    </ul>
+
+    <p id="empty-state" hidden class="py-16 text-center font-mono text-sm" style="color: var(--c-text-faint);">
+      Nothing here yet.
+    </p>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    var chips = document.querySelectorAll('.filter-chip');
+    var items = document.querySelectorAll('.project-item');
+    var empty = document.getElementById('empty-state');
+    if (!chips.length) return;
+
+    var activeStyle =
+      'border-color: var(--c-accent); background: color-mix(in oklab, var(--c-accent) 16%, transparent); color: var(--c-accent);';
+    var idleStyle =
+      'border-color: var(--c-border); background: var(--c-surface); color: var(--c-text-dim);';
+
+    function apply(filter) {
+      var shown = 0;
+      items.forEach(function (item) {
+        var match = filter === 'all' || item.dataset.category === filter;
+        item.hidden = !match;
+        if (match) shown++;
+      });
+      if (empty) empty.hidden = shown !== 0;
+    }
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chips.forEach(function (other) {
+          var on = other === chip;
+          other.setAttribute('aria-pressed', String(on));
+          other.setAttribute('style', on ? activeStyle : idleStyle);
+        });
+        apply(chip.dataset.filter);
+      });
+    });
+  })();
+</script>
