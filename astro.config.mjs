@@ -9,7 +9,14 @@ export default defineConfig({
   site: 'https://amanbind.com',
   output: 'static',
   integrations: [react(), mdx(), sitemap()],
+  trailingSlash: 'ignore',
   vite: {
     plugins: [tailwindcss()],
+  },
+  markdown: {
+    shikiConfig: {
+      theme: 'monokai',
+      wrap: true,
+    },
   },
 });
