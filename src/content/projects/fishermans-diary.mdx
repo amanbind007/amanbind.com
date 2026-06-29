@@ -1,0 +1,24 @@
+---
+title: "Fisherman's Diary"
+category: "ios"
+period: "2024"
+summary: "A note-taking app for anglers that scrapes species data from Fishbase, stores it offline with SwiftData, and pages results in as you scroll."
+stack: ["SwiftUI", "SwiftData", "Combine", "SwiftSoup", "MVVM", "Swift Package Manager"]
+repo: "https://github.com/amanbind007/Fishermans-Diary-iOS"
+stars: 8
+featured: true
+order: 60
+---
+
+The most architecturally deliberate of my iOS apps. Two-way-binding MVVM with
+Combine, SwiftData for offline persistence so catches and species information
+stay available without a network, and SwiftSoup scraping the details out of
+Fishbase.
+
+The parts I would still defend: infinite scroll that loads fish data lazily
+against both the search term and scroll position, and a deliberate separation
+into dependency-injected repositories rather than view models reaching straight
+for the network.
+
+Built almost entirely from native iOS components, because an angler standing in
+a river does not want to learn a bespoke interface.

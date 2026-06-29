@@ -1,0 +1,20 @@
+---
+title: "Drawing Guesser"
+category: "ml"
+period: "2024"
+summary: "An on-device CoreML model trained on Google's QuickDraw dataset that recognises sketches in real time as you draw them."
+stack: ["CoreML", "CreateML", "Vision", "SwiftUI", "MVVM", "QuickDraw dataset"]
+repo: "https://github.com/amanbind007/Drawing-Guesser-iOS"
+stars: 3
+featured: true
+order: 54
+---
+
+Trained on the QuickDraw dataset with CreateML and run entirely on-device
+through CoreML and Vision — no network round trip, so predictions update as the
+stroke is still being drawn.
+
+Most of the actual work was model fine-tuning rather than app code. Getting a
+classifier that behaves acceptably on partial, mid-stroke input is a different
+problem from getting one that scores well on complete drawings, and the gap
+between those two is where the interesting debugging lived.
