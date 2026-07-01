@@ -1,0 +1,32 @@
+---
+title: "Homelab & Self-Hosted Services"
+category: "homelab"
+period: "Ongoing"
+summary: "A self-hosted stack that doubles as a permanent staging environment for the things I want to understand properly — identity, search, reverse proxying, backups and container orchestration."
+metrics:
+  - { value: "Self-hosted", label: "Identity, media, search" }
+  - { value: "IaC", label: "Reproducible from config" }
+stack: ["Docker", "Docker Compose", "Caddy", "Keycloak", "OpenSearch", "Terraform", "Ansible", "Prometheus", "Grafana"]
+order: 70
+---
+
+## Why bother
+
+Self-hosting is the cheapest way I know to build real operational intuition.
+Running your own identity provider teaches you more about OIDC in a weekend than
+a month of documentation, and being your own on-call for a service you actually
+use makes you honest about backup strategy.
+
+Most of what I have deployed at work started as something I broke at home first.
+
+## Roughly what runs
+
+- **Reverse proxy and TLS** — Caddy in front of everything, automatic certificates.
+- **Identity** — Keycloak as a single sign-on provider across services.
+- **Search and telemetry** — an OpenSearch instance, which is also where I prototyped the RCA correlation work.
+- **Monitoring** — Prometheus and Grafana, same pattern as production, smaller blast radius.
+- **Media and library services** — the workloads that make the rest worth maintaining.
+- **Configuration** — Compose files and Ansible playbooks in version control, so a rebuild is a checkout away.
+
+> This page is the section I refresh most often — the stack changes as things
+> get replaced or retired.
