@@ -1,0 +1,30 @@
+---
+import { skillGroups } from '../data/skills';
+
+const toneVar: Record<string, string> = {
+  accent: 'var(--c-accent)',
+  info: 'var(--c-info)',
+  ok: 'var(--c-ok)',
+  warn: 'var(--c-warn)',
+  alt: 'var(--c-alt)',
+};
+---
+
+<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+  {skillGroups.map((group, i) => (
+    <section class="card scroll-reveal p-6" style={`transition-delay: ${i * 60}ms;`}>
+      <h3 class="font-mono text-sm font-semibold" style={`color: ${toneVar[group.tone]};`}>{group.title}</h3>
+      <p class="mt-1.5 text-xs" style="color: var(--c-text-faint);">{group.note}</p>
+      <ul class="mt-4 flex flex-wrap gap-1.5">
+        {group.items.map((item) => (
+          <li
+            class="rounded-md border px-2 py-1 text-[0.75rem] leading-tight"
+            style="border-color: var(--c-border); background: var(--c-bg-deep); color: var(--c-text-dim);"
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</div>
