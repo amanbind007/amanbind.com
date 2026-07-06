@@ -1,0 +1,29 @@
+---
+title: "OSS & IP Compliance Audit"
+category: "platform"
+period: "2025"
+summary: "Made the case for a source-composition-analysis licence, ran the scans across the product, and drove GPL and commercially-licensed dependencies out of a shipping enterprise codebase."
+metrics:
+  - { value: "Full estate", label: "Scan coverage" }
+  - { value: "GPL + commercial", label: "Dependencies removed" }
+stack: ["FlexNet Code Insight", "SCA", "License compliance", "Dependency management"]
+proprietary: true
+order: 80
+---
+
+## Why it mattered
+
+TCS Enterprise Manager is a commercial product sold to enterprise customers.
+A copyleft or commercially-licensed dependency buried in the tree is a legal
+exposure, not a technical one — and nobody had systematically looked.
+
+## What I did
+
+I convinced the team to procure a FlexNet Code Insight licence for source
+composition analysis, then ran the audit myself: executed the scans, worked
+through the findings, separated real obligations from scanner noise, and drove
+the removal or replacement of GPL and commercial libraries the product could
+not legally ship.
+
+Compliance work is unglamorous and largely invisible when it goes well. It is
+also the kind of thing that becomes extremely visible when it does not.
