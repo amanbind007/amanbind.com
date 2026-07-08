@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { site } from '../data/site';
+import { arc, education } from '../data/skills';
+---
+
+<BaseLayout
+  title="About"
+  description="How I went from shipping SwiftUI apps to owning release engineering for a 70+ microservice enterprise platform."
+>
+  <section class="shell pt-16 pb-12 sm:pt-24">
+    <SectionHeading eyebrow="About" title="The longer version" />
+
+    <div class="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem]">
+      <div class="prose-body max-w-2xl">
+        <p>
+          I'm a platform engineer in Bengaluru. I spend my days on the machinery
+          between a merged pull request and a running production service —
+          pipelines, environments, permissions, telemetry, and the revert button
+          you hope nobody has to press.
+        </p>
+
+        <h2>I started on the other side</h2>
+        <p>
+          My degree specialised in iOS development, and my first job was mobile:
+          a native SwiftUI iPad application that I built essentially on my own
+          for a client engagement at TCS. It shipped in about two months, the
+          enhancement queue went quiet, and I picked up the AWS side of the
+          engagement because there was nothing else to do.
+        </p>
+        <p>
+          That turned out to be the fork in the road. I liked the infrastructure
+          problem more than the app problem, and asked to move.
+        </p>
+
+        <h2>What changed my mind about infrastructure</h2>
+        <p>
+          I joined the Platform Solutions unit expecting to build a mobile client
+          for <strong>TCS Enterprise Manager</strong>, an enterprise ITSM/ITOM
+          product. Budget realities moved me into a DevOps role instead, right as
+          the unit decided to modernise how it delivered software.
+        </p>
+        <p>
+          The starting position was bleak in an instructive way: 70+ microservices
+          in SVN, a fixed weekly deployment window, no review gate, no automated
+          evaluation of a merge, and a revert path that meant an hour of careful
+          manual work. Two of us were asked to fix it.
+        </p>
+        <p>
+          The thing I'd tell anyone doing similar work is that the tooling was
+          the easy part. We spent the first stretch writing down what the delivery
+          model actually <em>is</em> — what branches mean, what a merge has to
+          prove, how environments get promoted, who may deploy where. Every
+          pipeline after that was an implementation of that document rather than
+          an improvisation.
+        </p>
+        <p>
+          The change that mattered most wasn't the deploy pipeline. It was the
+          revert pipeline. Once undoing a release took under thirty seconds
+          instead of an hour, people stopped hoarding changes for the Thursday
+          window and started shipping when things were ready. Making failure
+          cheap is what made speed possible.
+        </p>
+
+        <h2>Where my head is now</h2>
+        <p>
+          Increasingly on the boundary between platform, security and reliability.
+          The OSS licence audit I pushed for, the policy-as-code deployment
+          permissions, the Security Specialty certification — those came from the
+          same instinct, which is that a delivery system nobody can reason about
+          is a liability no matter how fast it runs.
+        </p>
+        <p>
+          I've also fallen properly in love with self-hosting. Running your own
+          identity provider, reverse proxy and search cluster is the cheapest
+          operational education available, and a good chunk of what I've deployed
+          at work I broke at home first.
+        </p>
+        <p>
+          I still write Swift, and I'm currently building the product's Flutter
+          client — so the mobile half of my background hasn't gone anywhere.
+          It just isn't the headline any more.
+        </p>
+
+        <h2>Outside the terminal</h2>
+        <p>
+          I read a lot, I maintain more services than I strictly need, and I'm
+          the person on the team who volunteers for the on-call rotation because
+          it's the fastest way to find out what your monitoring is actually
+          missing.
+        </p>
+
+        <hr class="hair my-10" />
+
+        <p>
+          If you're hiring for platform, DevSecOps, SRE or cloud architecture
+          work — or you just want to compare homelab notes —
+          <a href={site.socials.email}>{site.email}</a>.
+        </p>
+      </div>
+
+      <aside class="space-y-4 lg:sticky lg:top-24 lg:self-start">
+        <div class="card p-5">
+          <h2 class="font-mono text-xs uppercase tracking-[0.12em]" style="color: var(--c-text-faint);">Arc</h2>
+          <ol class="mt-4 space-y-3">
+            {arc.map((event) => (
+              <li class="flex gap-3 text-xs leading-relaxed">
+                <span class="shrink-0 font-mono font-semibold" style="color: var(--c-accent);">{event.year}</span>
+                <span style="color: var(--c-text-dim);">{event.label}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="card p-5">
+          <h2 class="font-mono text-xs uppercase tracking-[0.12em]" style="color: var(--c-text-faint);">Education</h2>
+          <p class="mt-3 text-sm font-medium" style="color: var(--c-text);">{education.degree}</p>
+          <p class="mt-1 text-xs" style="color: var(--c-text-dim);">{education.specialisation}</p>
+          <p class="mt-3 text-xs" style="color: var(--c-text-dim);">{education.institution}</p>
+          <p class="mt-1 font-mono text-xs" style="color: var(--c-text-faint);">
+            {education.period} · {education.grade}
+          </p>
+          <ul class="mt-4 flex flex-wrap gap-1.5">
+            {education.coursework.map((course) => (
+              <li class="rounded border px-1.5 py-0.5 text-[0.68rem]"
+                  style="border-color: var(--c-border); color: var(--c-text-faint);">
+                {course}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="card p-5">
+          <h2 class="font-mono text-xs uppercase tracking-[0.12em]" style="color: var(--c-text-faint);">Elsewhere</h2>
+          <ul class="mt-3 space-y-2 text-sm">
+            <li><a href={site.socials.github} target="_blank" rel="noopener" style="color: var(--c-info);">GitHub ↗</a></li>
+            <li><a href={site.socials.linkedin} target="_blank" rel="noopener" style="color: var(--c-info);">LinkedIn ↗</a></li>
+            <li><a href={site.socials.credly} target="_blank" rel="noopener" style="color: var(--c-info);">Credly ↗</a></li>
+            <li><a href={site.resumePath} style="color: var(--c-info);">Résumé (PDF)</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
