@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404" description="That page doesn't exist." noindex>
+  <section class="shell flex min-h-[62vh] flex-col items-start justify-center py-20">
+    <p class="eyebrow">Error 404</p>
+    <h1 class="mt-4 font-mono text-5xl font-semibold sm:text-7xl" style="color: var(--c-text);">
+      404<span class="caret" aria-hidden="true">&nbsp;</span>
+    </h1>
+    <p class="mt-6 max-w-md text-base leading-relaxed" style="color: var(--c-text-dim);">
+      No route matched. The deploy pipeline is fine — this page just never existed.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="/" class="rounded-lg px-5 py-2.5 text-sm font-semibold"
+         style="background: var(--c-accent); color: var(--c-bg-deep);">
+        Back home
+      </a>
+      <a href="/projects" class="rounded-lg border px-5 py-2.5 text-sm font-medium"
+         style="border-color: var(--c-border); background: var(--c-surface); color: var(--c-text-dim);">
+        Browse projects
+      </a>
+    </div>
+  </section>
+</BaseLayout>
