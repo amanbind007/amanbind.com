@@ -2,15 +2,39 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
 import { DEFAULT_THEME, STORAGE_KEY } from '../data/themes';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Overrides the OG image path for a specific page. */
+  image?: string;
+  noindex?: boolean;
 }
 
-const { title, description = 'Platform and DevSecOps engineer.' } = Astro.props;
-const pageTitle = title ? `${title} — Aman Bind` : 'Aman Bind';
+const {
+  title,
+  description = site.tagline,
+  image = '/og.png',
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.role}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
+const ogImage = new URL(image, Astro.site ?? site.url);
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  url: site.url,
+  email: site.email,
+  jobTitle: site.role,
+  address: { '@type': 'PostalAddress', addressLocality: 'Bengaluru', addressRegion: 'Karnataka', addressCountry: 'IN' },
+  sameAs: [site.socials.github, site.socials.linkedin, site.socials.credly],
+  knowsAbout: ['DevSecOps', 'CI/CD', 'Amazon Web Services', 'Site Reliability Engineering', 'Observability', 'iOS Development'],
+};
 ---
 
 <!doctype html>
@@ -20,17 +44,23 @@ const pageTitle = title ? `${title} — Aman Bind` : 'Aman Bind';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.domain} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -38,6 +68,8 @@ const pageTitle = title ? `${title} — Aman Bind` : 'Aman Bind';
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
 
     {/* Applies the stored filter before first paint so the page never flashes the default palette. */}
     <script is:inline define:vars={{ storageKey: STORAGE_KEY, fallback: DEFAULT_THEME }}>
@@ -57,11 +89,44 @@ const pageTitle = title ? `${title} — Aman Bind` : 'Aman Bind';
       })();
     </script>
   </head>
+
   <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100]
+             focus:rounded-lg focus:bg-[var(--c-surface)] focus:px-4 focus:py-2 focus:text-sm"
+    >
+      Skip to content
+    </a>
+
     <Header />
-    <main>
+    <main id="main">
       <slot />
     </main>
     <Footer />
+
+    <script is:inline>
+      // Progressive reveal for sections below the fold.
+      (function () {
+        var targets = document.querySelectorAll('.scroll-reveal');
+        if (!targets.length) return;
+        if (!('IntersectionObserver' in window)) {
+          targets.forEach(function (el) { el.classList.add('is-visible'); });
+          return;
+        }
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+        );
+        targets.forEach(function (el) { io.observe(el); });
+      })();
+    </script>
   </body>
 </html>
