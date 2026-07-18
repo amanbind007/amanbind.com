@@ -3,12 +3,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ExperienceTimeline from '../components/ExperienceTimeline.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SkillMatrix from '../components/SkillMatrix.astro';
+import CertGrid from '../components/CertGrid.astro';
+import { getCollection } from 'astro:content';
 import { site } from '../data/site';
+
+const featured = (await getCollection('projects', ({ data }) => data.featured && !data.draft))
+  .sort((a, b) => b.data.order - a.data.order)
+  .slice(0, 4);
 ---
 
 <BaseLayout description={site.tagline}>
   <Hero />
 
+  <!-- Intro -->
+  <section class="shell py-16 sm:py-20">
+    <div class="scroll-reveal card p-8 sm:p-10">
+      <p class="eyebrow">whoami</p>
+      <p class="mt-5 text-lg leading-relaxed sm:text-xl" style="color: var(--c-text-dim);">
+        {site.summary}
+      </p>
+      <a href="/about" class="mt-6 inline-block font-mono text-sm underline underline-offset-4" style="color: var(--c-accent);">
+        The longer version →
+      </a>
+    </div>
+  </section>
+
+  <!-- Experience -->
   <section class="shell py-8 sm:py-12">
     <SectionHeading
       id="work"
@@ -18,6 +40,109 @@ import { site } from '../data/site';
     />
     <div class="mt-10">
       <ExperienceTimeline />
+    </div>
+  </section>
+
+  <!-- Featured projects -->
+  <section class="shell py-16 sm:py-20">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <SectionHeading
+        eyebrow="Selected work"
+        title="Things I've built"
+        lede="Platform and observability work first, because it's what I do now. The iOS apps are still there — and still mine."
+      />
+      <a
+        href="/projects"
+        class="rounded-lg border px-4 py-2 text-sm font-medium whitespace-nowrap"
+        style="border-color: var(--c-border); background: var(--c-surface); color: var(--c-text-dim);"
+      >
+        All projects →
+      </a>
+    </div>
+
+    <ul class="mt-10 grid gap-4 md:grid-cols-2">
+      {featured.map((project, i) => (
+        <li class="scroll-reveal relative" style={`transition-delay: ${i * 70}ms;`}>
+          <ProjectCard project={project} />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Stack -->
+  <section class="shell py-8 sm:py-12">
+    <SectionHeading
+      id="stack"
+      eyebrow="Toolbox"
+      title="What I work with"
+      lede="Grouped by what I actually use it for, rather than by an alphabetical list designed to catch keyword filters."
+    />
+    <div class="mt-10">
+      <SkillMatrix />
+    </div>
+  </section>
+
+  <!-- Certifications -->
+  <section class="shell py-16 sm:py-20">
+    <SectionHeading
+      id="certifications"
+      eyebrow="Credentials"
+      title="Seven AWS certifications"
+      lede="Two Professional, one Specialty, and three Associate — worked through deliberately while rebuilding our delivery platform on the same primitives."
+    />
+    <div class="mt-10">
+      <CertGrid />
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="shell py-8 sm:py-12">
+    <div
+      class="scroll-reveal relative overflow-hidden rounded-2xl border p-8 sm:p-14"
+      style="border-color: var(--c-border-strong); background: var(--c-surface);"
+    >
+      <div
+        class="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full blur-3xl"
+        style="background: var(--c-glow);"
+        aria-hidden="true"
+      ></div>
+
+      <p class="eyebrow">Contact</p>
+      <h2 class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" style="color: var(--c-text);">
+        Let's talk infrastructure.
+      </h2>
+      <p class="mt-4 max-w-xl text-base leading-relaxed" style="color: var(--c-text-dim);">
+        {site.availability}. If you're building something where delivery speed, reliability
+        or cloud architecture is the bottleneck, I'd like to hear about it.
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a
+          href={site.socials.email}
+          class="rounded-lg px-5 py-2.5 text-sm font-semibold"
+          style="background: var(--c-accent); color: var(--c-bg-deep);"
+        >
+          {site.email}
+        </a>
+        <a
+          href={site.socials.linkedin}
+          target="_blank"
+          rel="noopener"
+          class="rounded-lg border px-5 py-2.5 text-sm font-medium"
+          style="border-color: var(--c-border-strong); color: var(--c-text-dim);"
+        >
+          LinkedIn
+        </a>
+        <a
+          href={site.socials.github}
+          target="_blank"
+          rel="noopener"
+          class="rounded-lg border px-5 py-2.5 text-sm font-medium"
+          style="border-color: var(--c-border-strong); color: var(--c-text-dim);"
+        >
+          GitHub
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>
