@@ -1,0 +1,16 @@
+# Copy to terraform.tfvars and adjust. terraform.tfvars is gitignored.
+
+domain_name       = "amanbind.com"
+region            = "ap-south-1"
+github_repository = "amanbind007/amanbind.com"
+github_branch     = "main"
+
+# Set to false if this AWS account already has the GitHub OIDC provider
+# registered (it is account-wide, and creating a second one fails).
+create_oidc_provider = true
+
+price_class = "PriceClass_200"
+
+tags = {
+  Environment = "production"
+}
