@@ -6,6 +6,31 @@ resource "aws_cloudfront_origin_access_control" "site" {
   signing_protocol                  = "sigv4"
 }
 
+# Astro emits directory-style routes (/about/ -> /about/index.html). CloudFront
+# does not resolve those for non-root paths, so a viewer-request function
+# rewrites them at the edge.
+resource "aws_cloudfront_function" "rewrite_index" {
+  name    = "${replace(var.domain_name, ".", "-")}-rewrite-index"
+  runtime = "cloudfront-js-2.0"
+  comment = "Append index.html to directory-style requests"
+  publish = true
+
+  code = <<-JS
+    function handler(event) {
+      var request = event.request;
+      var uri = request.uri;
+
+      if (uri.endsWith('/')) {
+        request.uri = uri + 'index.html';
+      } else if (!uri.includes('.')) {
+        request.uri = uri + '/index.html';
+      }
+
+      return request;
+    }
+  JS
+}
+
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -31,6 +56,10 @@ resource "aws_cloudfront_distribution" "site" {
     cache_policy_id            = "658327ea-f89d-4fab-a63d-7e88639e58f6"
     origin_request_policy_id   = "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf"
 
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.rewrite_index.arn
+    }
   }
 
   # Hashed assets are immutable — cache them hard.
