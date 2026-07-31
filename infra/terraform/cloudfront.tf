@@ -31,6 +31,43 @@ resource "aws_cloudfront_function" "rewrite_index" {
   JS
 }
 
+resource "aws_cloudfront_response_headers_policy" "security" {
+  name = "${replace(var.domain_name, ".", "-")}-security-headers"
+
+  security_headers_config {
+    strict_transport_security {
+      access_control_max_age_sec = 63072000
+      include_subdomains         = true
+      preload                    = true
+      override                   = true
+    }
+    content_type_options {
+      override = true
+    }
+    frame_options {
+      frame_option = "DENY"
+      override     = true
+    }
+    referrer_policy {
+      referrer_policy = "strict-origin-when-cross-origin"
+      override        = true
+    }
+    xss_protection {
+      mode_block = true
+      protection = true
+      override   = true
+    }
+  }
+
+  custom_headers_config {
+    items {
+      header   = "Permissions-Policy"
+      value    = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+      override = true
+    }
+  }
+}
+
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -55,6 +92,7 @@ resource "aws_cloudfront_distribution" "site" {
     # AWS managed policies: CachingOptimized + CORS-S3Origin.
     cache_policy_id            = "658327ea-f89d-4fab-a63d-7e88639e58f6"
     origin_request_policy_id   = "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf"
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id
 
     function_association {
       event_type   = "viewer-request"
@@ -72,6 +110,7 @@ resource "aws_cloudfront_distribution" "site" {
     compress               = true
 
     cache_policy_id            = "658327ea-f89d-4fab-a63d-7e88639e58f6"
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id
   }
 
   custom_error_response {
