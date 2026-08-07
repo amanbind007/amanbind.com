@@ -13,8 +13,11 @@ export const site = {
   ],
   tagline:
     'I build the delivery machinery that lets product teams ship without fear — pipelines, observability, and cloud architecture.',
+  summary:
+    'Platform engineer at TCS working on TCS Enterprise Manager, an enterprise ITSM/ITOM product. I took a 70+ microservice estate off SVN and manual deploys, and rebuilt delivery around GitLab, Jenkins and infrastructure-as-code — cutting deployment downtime from an hour to ten minutes and reverts from an hour to under thirty seconds. Seven AWS certifications, and a homelab that keeps me honest.',
   location: 'Bengaluru, Karnataka, India',
   email: 'amanbind007@gmail.com',
+  phone: '+91 83051-48293',
   resumePath: '/resume.pdf',
   availability: 'Open to Platform / DevSecOps / SRE / Cloud Architect roles',
   socials: {
@@ -25,16 +28,18 @@ export const site = {
   },
 } as const;
 
+export const nav = [
+  { label: 'Work', href: '/#work' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Stack', href: '/#stack' },
+  { label: 'Certifications', href: '/#certifications' },
+  { label: 'About', href: '/about' },
+] as const;
+
 /** Headline numbers from the TEM platform rebuild. */
 export const impactStats = [
   { value: '60 min → 10 min', label: 'Deployment downtime', tone: 'accent' },
   { value: '60 min → <30 s', label: 'Production revert', tone: 'ok' },
   { value: '70+', label: 'Microservices on automated CI/CD', tone: 'info' },
   { value: '7', label: 'AWS certifications', tone: 'warn' },
-] as const;
-
-export const nav = [
-  { label: 'Work', href: '/#work' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'About', href: '/about' },
 ] as const;
