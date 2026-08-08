@@ -8,10 +8,14 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://amanbind.com',
   output: 'static',
-  integrations: [react(), mdx(), sitemap()],
   trailingSlash: 'ignore',
+  integrations: [react(), mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
+  },
+  build: {
+    // Inline tiny assets so the theme bootstrap never causes a flash.
+    inlineStylesheets: 'auto',
   },
   markdown: {
     shikiConfig: {
