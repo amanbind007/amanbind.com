@@ -2,7 +2,7 @@
 title: "SVN → GitLab CE Migration & DevSecOps Rollout"
 category: "platform"
 period: "2024"
-summary: "Evaluated free Git platforms for an SVN-bound business unit, migrated the codebase to GitLab CE, and published the DevSecOps guidelines, tooling and training that made it stick."
+summary: "Evaluated free Git platforms for an SVN-bound business unit, migrated the codebase to GitLab CE, and published the DevSecOps guidelines, tooling and training that went with it."
 metrics:
   - { value: "Unit-wide", label: "Migration scope" }
   - { value: "5+", label: "Teams supported" }
@@ -14,14 +14,13 @@ order: 95
 
 ## Choosing the platform
 
-The unit ran on SVN. Moving off it was a prerequisite for everything else we
-wanted to do, but the choice had to survive procurement — it needed to be free
-and self-hostable.
+The unit ran on SVN. Moving off it was a prerequisite for the pipeline work,
+and the replacement had to be free and self-hostable to get through
+procurement.
 
-We ran a genuine evaluation rather than picking the popular answer: candidate
-platforms were installed, loaded, stress-tested and scored against how the
-teams actually work. GitLab CE won on self-hosting story, CI integration and
-permission model.
+We installed, load-tested and scored the candidates against how the teams
+actually work. GitLab CE won on self-hosting, CI integration and permission
+model.
 
 We ran the same exercise for project tracking, comparing Redmine and
 OpenProject under load before standardising on OpenProject.
@@ -29,16 +28,15 @@ OpenProject under load before standardising on OpenProject.
 ## Migration
 
 History, branches and access mappings moved over per repository, alongside the
-pipeline work that was landing in parallel. Migration was the easy half.
+pipeline work landing in parallel.
 
-## Making it stick
+## Rollout
 
-The harder half was the human one. We published DevSecOps guidelines and
-process documentation covering how code review, scanning, deployment and access
-requests work under the new model, released the tooling to the teams, and ran
-knowledge-transfer sessions for engineers and senior stakeholders.
+The larger part was adoption. We published DevSecOps guidelines and process
+documentation covering code review, scanning, deployment and access requests
+under the new model, released the tooling, and ran knowledge-transfer sessions
+for engineers and senior stakeholders.
 
 I later helped several other Platform Solutions teams through the same
-migration and advised their DevOps engineers on pipeline and automation
-architecture — that ended up being some of the most appreciated work I have done
-at TCS.
+migration and worked with their DevOps engineers on pipeline and automation
+design.

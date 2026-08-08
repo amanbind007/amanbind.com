@@ -2,7 +2,7 @@
 title: "Homelab & Self-Hosted Services"
 category: "homelab"
 period: "Ongoing"
-summary: "A self-hosted stack that doubles as a permanent staging environment for the things I want to understand properly — identity, search, reverse proxying, backups and container orchestration."
+summary: "A self-hosted stack covering identity, search, reverse proxying, monitoring and backups, kept in version control."
 metrics:
   - { value: "Self-hosted", label: "Identity, media, search" }
   - { value: "IaC", label: "Reproducible from config" }
@@ -10,23 +10,19 @@ stack: ["Docker", "Docker Compose", "Caddy", "Keycloak", "OpenSearch", "Terrafor
 order: 70
 ---
 
-## Why bother
+## What it's for
 
-Self-hosting is the cheapest way I know to build real operational intuition.
-Running your own identity provider teaches you more about OIDC in a weekend than
-a month of documentation, and being your own on-call for a service you actually
-use makes you honest about backup strategy.
-
-Most of what I have deployed at work started as something I broke at home first.
+I run a set of services at home, mostly as a way to learn things properly.
+Several things I've since deployed at work I broke here first.
 
 ## Roughly what runs
 
 - **Reverse proxy and TLS** — Caddy in front of everything, automatic certificates.
 - **Identity** — Keycloak as a single sign-on provider across services.
-- **Search and telemetry** — an OpenSearch instance, which is also where I prototyped the RCA correlation work.
-- **Monitoring** — Prometheus and Grafana, same pattern as production, smaller blast radius.
+- **Search and telemetry** — an OpenSearch instance, also where I prototyped the RCA correlation work.
+- **Monitoring** — Prometheus and Grafana, the same pattern as production on a smaller scale.
 - **Media and library services** — the workloads that make the rest worth maintaining.
 - **Configuration** — Compose files and Ansible playbooks in version control, so a rebuild is a checkout away.
 
-> This page is the section I refresh most often — the stack changes as things
-> get replaced or retired.
+> This is the page I update most often — the stack changes as things get
+> replaced or retired.

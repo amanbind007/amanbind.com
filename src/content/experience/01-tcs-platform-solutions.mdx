@@ -4,14 +4,18 @@ companyUrl: "https://www.tcs.com/"
 role: "DevOps & Platform Engineer"
 team: "Platform Solutions — TCS Enterprise Manager"
 location: "Bengaluru, Karnataka"
-start: "Jan 2024"
+start: "Feb 2024"
 end: "Present"
 current: true
 order: 30
-summary: "Rebuilt release engineering for an enterprise ITSM/ITOM product — 70+ microservices moved off SVN and manual deploys onto GitLab, Jenkins and policy-as-code."
+summary: "Release engineering for an enterprise ITSM/ITOM product. Moved 70+ microservices off SVN and manual deploys onto GitLab, Jenkins and policy-as-code."
 stack:
   - Jenkins
   - GitLab CE
+  - Apache Superset
+  - Bytebase
+  - pgbouncer
+  - PostgreSQL
   - Docker
   - Kubernetes
   - Ansible
@@ -35,20 +39,22 @@ highlights:
   - "Stood up Prometheus and Grafana for infrastructure and application monitoring with automated remediation, e.g. a disk-usage alert fires a webhook that triggers a Jenkins job to prune old backups and clean workspaces."
   - "Ran the IP & OSS audit for the product using FlexNet Code Insight — made the licensing case, executed the scans, reviewed findings and removed GPL and commercial dependencies from the codebase."
   - "Supported other Platform Solutions teams through their own SVN-to-GitLab migrations and advised their DevOps engineers on automation architecture."
+  - "Ran a POC comparing Artifactory OSS, Nexus OSS and the GitLab package registry, and standardised internal library and container distribution on GitLab CE."
+  - "Replaced direct developer database access with a governed Apache Superset layer across DEV, UAT and PROD, with GitLab SSO, row-level security, query limits and management reporting dashboards."
+  - "Built a just-in-time database credential workflow using Bytebase and pgbouncer, so local development access is approved, time-bound and revoked automatically instead of manually provisioned and permanent."
   - "On-call for production infrastructure; currently building the product's cross-platform mobile client in Flutter."
 ---
 
 TCS Enterprise Manager is an internal IP asset under the Platform Solutions
-unit — an enterprise platform in the same space as ServiceNow, covering ITSM,
-ITIM, ITAM, APM and ITGSM.
+unit — an enterprise platform covering ITSM, ITIM, ITAM, APM and ITGSM.
 
 I joined the team as a mobile developer and moved into a DevOps role when the
 unit set out to modernise product delivery. Two of us were asked to take the
-whole unit from SVN and manual, unreviewed deployments to a real CI/CD practice.
+unit from SVN and manual deployments to a CI/CD model.
 
-That meant designing the delivery model rather than just wiring tools together:
-which branches exist and what they mean, what a merge has to prove before it
-lands, how an environment is promoted, who is allowed to deploy where, and what
-happens at 2am when a release goes wrong. The revert pipeline mattered as much
-as the deploy pipeline — being able to undo a release in seconds is what made
-the team comfortable releasing whenever they wanted to.
+Much of the work was defining the delivery model before building anything:
+what branches mean, what a merge has to pass, how environments are promoted,
+who can deploy where, and what the rollback path looks like. The revert
+pipeline ended up mattering as much as the deploy pipeline. Once a revert took
+seconds rather than an hour, the team was willing to release outside the weekly
+window.

@@ -2,7 +2,7 @@
 title: "Self-Healing Infrastructure Monitoring"
 category: "observability"
 period: "2024 — 2025"
-summary: "Prometheus and Grafana across infrastructure and applications, wired to webhook-triggered Jenkins remediation jobs so routine incidents resolve themselves before anyone is paged."
+summary: "Prometheus and Grafana across infrastructure and applications, wired to webhook-triggered Jenkins jobs that resolve routine incidents automatically."
 metrics:
   - { value: "Auto", label: "Remediation for routine alerts" }
   - { value: "24/7", label: "Production on-call coverage" }
@@ -11,22 +11,19 @@ proprietary: true
 order: 85
 ---
 
-## Monitoring that does something
+## Automated remediation
 
-Dashboards that only page a human are a half-finished system. Once Prometheus
-and Grafana were covering both infrastructure and application metrics, the
-obvious next step was to close the loop on the alerts whose fix is always the
-same.
+Once Prometheus and Grafana covered both infrastructure and application
+metrics, we closed the loop on the alerts whose fix is always the same.
 
-The canonical example: server disk usage crosses 70%. Instead of paging me, the
-alert fires a webhook that triggers a Jenkins pipeline which prunes the oldest
-backups and cleans out the Jenkins workspace directories. The incident resolves
-itself and leaves an audit trail of what ran and why.
+The main example: server disk usage crosses 70%, and instead of paging someone
+the alert fires a webhook that triggers a Jenkins pipeline to prune the oldest
+backups and clean the Jenkins workspace directories. The incident resolves
+itself and leaves a record of what ran.
 
-The rule I applied when deciding what to automate was simple — if the runbook
-for an alert has no decision in it, it should not need a human.
+We automated the alerts whose runbook contained no decision, and left the rest
+to a human.
 
 ## On-call
 
-I also hold the production on-call rotation for the platform's servers, which
-is a strong incentive to keep expanding the set of alerts that fix themselves.
+I hold the production on-call rotation for the platform's servers.
