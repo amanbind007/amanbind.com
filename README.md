@@ -3,7 +3,7 @@
 Personal site and portfolio. Static build, deployed to S3 behind CloudFront.
 
 **Stack:** [Astro 5](https://astro.build) · React 19 islands · Tailwind CSS v4 · MDX content collections
-**Infrastructure:** S3 + CloudFront + Route 53 + ACM, described in Terraform
+**Infrastructure:** AWS S3 + CloudFront + ACM for hosting, Cloudflare for DNS — all in Terraform
 **Deploys:** GitHub Actions via OIDC — no long-lived AWS keys in the repo
 
 ---
@@ -84,12 +84,16 @@ on the homepage.
 
 ### One-time infrastructure
 
-Prerequisites: the domain's Route 53 hosted zone already exists, and AWS
+Prerequisites: the domain's zone already exists in Cloudflare, and AWS
 credentials are configured locally.
 
 ```bash
 cd infra/terraform
-cp terraform.tfvars.example terraform.tfvars   # adjust as needed
+cp terraform.tfvars.example terraform.tfvars   # set cloudflare_account_id
+
+# The Cloudflare token is read from the environment, never from a file.
+export CLOUDFLARE_API_TOKEN="..."
+
 terraform init
 terraform plan
 terraform apply
@@ -101,16 +105,34 @@ This provisions:
   noncurrent versions expiring after 30 days
 - **CloudFront** — OAC to the bucket (no public access, no website endpoint),
   HTTP/2 + IPv6, compression, security headers, and a viewer-request function
-  that rewrites `/about` → `/about/index.html`
-- **ACM** — DNS-validated certificate in `us-east-1` covering apex and `www`
-- **Route 53** — A and AAAA aliases for both names
+  that redirects `www` to the apex and rewrites `/about` → `/about/index.html`
+- **ACM** — DNS-validated certificate in `us-east-1` covering apex and `www`,
+  validated through Cloudflare records
+- **Cloudflare** — `CNAME` records for apex and `www` pointing at the
+  distribution, plus the ACM validation records
 - **IAM** — a GitHub OIDC provider and a deploy role scoped to
   `repo:amanbind007/amanbind.com:ref:refs/heads/main`, permitted only to write
   to the bucket and create invalidations
 
-If the AWS account already has the GitHub OIDC provider registered, set
-`create_oidc_provider = false` — it is account-wide and creating a second one
-fails.
+#### Why the records are DNS-only
+
+Both `CNAME`s are created with `proxied = false`. CloudFront already terminates
+TLS with the ACM certificate and acts as the CDN; proxying through Cloudflare as
+well would mean two caches to invalidate and Cloudflare re-originating to
+CloudFront on every miss. DNS-only keeps one cache and one TLS chain.
+
+Cloudflare flattens the apex `CNAME` automatically, so no ALIAS record is
+needed.
+
+The zone itself is read as a data source, not managed here — it also carries
+the `cloudflared` tunnel records for self-hosted services, and Terraform should
+not be able to touch those.
+
+#### www → apex
+
+Handled by the CloudFront function rather than a Cloudflare redirect rule, so
+the behaviour travels with the distribution and holds regardless of how DNS is
+pointed. `www.amanbind.com/x?y=z` returns a 301 to `https://amanbind.com/x?y=z`.
 
 ### Wire up GitHub
 
@@ -121,6 +143,9 @@ Take the Terraform outputs and set them on the repository:
 | `AWS_DEPLOY_ROLE_ARN` | `terraform output deploy_role_arn` |
 | `AWS_S3_BUCKET` | `terraform output bucket_name` |
 | `AWS_CLOUDFRONT_DISTRIBUTION_ID` | `terraform output distribution_id` |
+
+The Cloudflare token is only needed locally for `terraform apply`; the deploy
+workflow never touches Cloudflare.
 
 Optionally set the `AWS_REGION` repository variable (defaults to `ap-south-1`).
 
@@ -158,9 +183,11 @@ src/
 
 - [ ] Export the current résumé to `public/resume.pdf`
 - [ ] Add `public/og.png` (1200×630) for link previews
-- [ ] Fill in the three missing Credly badge URLs (see the `TODO` comments in
+- [ ] Fill in the two missing Credly badge URLs (see the `TODO` comments in
       `src/content/certifications/`) and confirm the exact title of the
       Generative AI certification
+- [ ] Confirm the microservice count — the site says 70+, the current resume
+      says 150+
 - [ ] Add `public/apple-touch-icon.png`
 - [ ] Review the homelab project page — it lists a plausible stack rather than
       a verified inventory
