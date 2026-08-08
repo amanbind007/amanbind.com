@@ -19,12 +19,13 @@ export const skillGroups: SkillGroup[] = [
       'Blue/green & rollback strategy',
       'Merge evaluation gates',
       'Artifact & backup pipelines',
+      'GitLab package & container registry',
     ],
   },
   {
     title: 'Cloud & Infrastructure',
     tone: 'info',
-    note: 'AWS-first, seven certifications deep.',
+    note: 'Mostly AWS.',
     items: [
       'AWS (EC2, S3, VPC, IAM, Lambda, ECS, RDS, CloudFront, Route 53)',
       'Terraform',
@@ -34,12 +35,13 @@ export const skillGroups: SkillGroup[] = [
       'Kubernetes',
       'Caddy / Nginx',
       'Linux administration',
+      'Cloudflare (DNS, Tunnels, R2)',
     ],
   },
   {
     title: 'Observability & SRE',
     tone: 'ok',
-    note: 'Alerts that fix themselves beat alerts that page you.',
+    note: 'Metrics, logs and traces, and the automation on top of them.',
     items: [
       'OpenTelemetry',
       'OpenTelemetry Collector',
@@ -49,13 +51,15 @@ export const skillGroups: SkillGroup[] = [
       'Alertmanager',
       'Distributed tracing',
       'Automated root-cause analysis',
+      'Apache Superset',
+      'PostgreSQL / pgbouncer',
       'Production on-call',
     ],
   },
   {
     title: 'Security & Governance',
     tone: 'warn',
-    note: 'The unglamorous half of DevSecOps.',
+    note: 'Scanning, licensing and access control.',
     items: [
       'SonarQube',
       'Veracode',
@@ -64,6 +68,8 @@ export const skillGroups: SkillGroup[] = [
       'Policy-as-code access control',
       'WSO2 API management',
       'Keycloak / OIDC',
+      'Bytebase (JIT DB access)',
+      'GitLab OAuth / SSO',
     ],
   },
   {
@@ -103,7 +109,7 @@ export const arc: TimelineEvent[] = [
   { year: '2024', label: 'Moved to Platform Solutions — SVN to GitLab, first Jenkins pipelines' },
   { year: '2024', label: 'Delivery model rewritten: 70+ microservices on governed CI/CD' },
   { year: '2025', label: 'OpenTelemetry RCA shipped into the product APM module; OSS/IP audit' },
-  { year: '2026', label: 'Seven AWS certifications; building the product Flutter client' },
+  { year: '2026', label: 'Database access governance, artifact management; building the product Flutter client' },
 ];
 
 export const education = {

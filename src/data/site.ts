@@ -9,17 +9,17 @@ export const site = {
     'CI/CD & Release Automation',
     'AWS Solutions Architect (Pro)',
     'Observability & SRE',
-    'iOS / SwiftUI Developer',
+    'Database & Access Governance',
   ],
   tagline:
-    'I build the delivery machinery that lets product teams ship without fear — pipelines, observability, and cloud architecture.',
+    'Platform and DevSecOps engineer. I work on CI/CD, observability and AWS infrastructure.',
   summary:
-    'Platform engineer at TCS working on TCS Enterprise Manager, an enterprise ITSM/ITOM product. I took a 70+ microservice estate off SVN and manual deploys, and rebuilt delivery around GitLab, Jenkins and infrastructure-as-code — cutting deployment downtime from an hour to ten minutes and reverts from an hour to under thirty seconds. Seven AWS certifications, and a homelab that keeps me honest.',
+    'Platform engineer at TCS, working on TCS Enterprise Manager — an enterprise ITSM/ITOM product. I moved a 70+ microservice estate off SVN and manual deploys onto GitLab, Jenkins and infrastructure-as-code. Deployment downtime went from about an hour to ten minutes, and reverts from about an hour to under thirty seconds. Six AWS certifications.',
   location: 'Bengaluru, Karnataka, India',
   email: 'amanbind007@gmail.com',
   phone: '+91 83051-48293',
   resumePath: '/resume.pdf',
-  availability: 'Open to Platform / DevSecOps / SRE / Cloud Architect roles',
+  availability: 'Open to DevOps / SRE / Platform / Cloud Architect roles',
   socials: {
     github: 'https://github.com/amanbind007',
     linkedin: 'https://www.linkedin.com/in/amanbind',
@@ -40,6 +40,6 @@ export const nav = [
 export const impactStats = [
   { value: '60 min → 10 min', label: 'Deployment downtime', tone: 'accent' },
   { value: '60 min → <30 s', label: 'Production revert', tone: 'ok' },
-  { value: '70+', label: 'Microservices on automated CI/CD', tone: 'info' },
-  { value: '7', label: 'AWS certifications', tone: 'warn' },
+  { value: '6', label: 'AWS certifications', tone: 'info' },
+  { value: '70+', label: 'Microservices on automated CI/CD', tone: 'warn' },
 ] as const;

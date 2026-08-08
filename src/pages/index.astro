@@ -11,7 +11,7 @@ import { site } from '../data/site';
 
 const featured = (await getCollection('projects', ({ data }) => data.featured && !data.draft))
   .sort((a, b) => b.data.order - a.data.order)
-  .slice(0, 4);
+  .slice(0, 6);
 ---
 
 <BaseLayout description={site.tagline}>
@@ -36,7 +36,7 @@ const featured = (await getCollection('projects', ({ data }) => data.featured &&
       id="work"
       eyebrow="Experience"
       title="Where I've worked"
-      lede="Three years from shipping a SwiftUI app on my own to owning release engineering for a 70+ microservice enterprise platform."
+      lede="Three years: a SwiftUI app for a client engagement, then release engineering for a 70+ microservice platform."
     />
     <div class="mt-10">
       <ExperienceTimeline />
@@ -49,7 +49,7 @@ const featured = (await getCollection('projects', ({ data }) => data.featured &&
       <SectionHeading
         eyebrow="Selected work"
         title="Things I've built"
-        lede="Platform and observability work first, because it's what I do now. The iOS apps are still there — and still mine."
+        lede="Platform and observability work first, then the iOS and ML projects."
       />
       <a
         href="/projects"
@@ -75,7 +75,7 @@ const featured = (await getCollection('projects', ({ data }) => data.featured &&
       id="stack"
       eyebrow="Toolbox"
       title="What I work with"
-      lede="Grouped by what I actually use it for, rather than by an alphabetical list designed to catch keyword filters."
+      lede="Grouped by what I use it for."
     />
     <div class="mt-10">
       <SkillMatrix />
@@ -87,8 +87,8 @@ const featured = (await getCollection('projects', ({ data }) => data.featured &&
     <SectionHeading
       id="certifications"
       eyebrow="Credentials"
-      title="Seven AWS certifications"
-      lede="Two Professional, one Specialty, and three Associate — worked through deliberately while rebuilding our delivery platform on the same primitives."
+      title="Six AWS certifications"
+      lede="Three Professional and three Associate, across architecture, DevOps and operations."
     />
     <div class="mt-10">
       <CertGrid />
@@ -109,11 +109,10 @@ const featured = (await getCollection('projects', ({ data }) => data.featured &&
 
       <p class="eyebrow">Contact</p>
       <h2 class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" style="color: var(--c-text);">
-        Let's talk infrastructure.
+        Get in touch
       </h2>
       <p class="mt-4 max-w-xl text-base leading-relaxed" style="color: var(--c-text-dim);">
-        {site.availability}. If you're building something where delivery speed, reliability
-        or cloud architecture is the bottleneck, I'd like to hear about it.
+        {site.availability}. If you have something in that space, I'd like to hear about it.
       </p>
 
       <div class="mt-8 flex flex-wrap gap-3">
