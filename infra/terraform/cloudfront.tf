@@ -6,19 +6,43 @@ resource "aws_cloudfront_origin_access_control" "site" {
   signing_protocol                  = "sigv4"
 }
 
-# Astro emits directory-style routes (/about/ -> /about/index.html). CloudFront
-# does not resolve those for non-root paths, so a viewer-request function
-# rewrites them at the edge.
-resource "aws_cloudfront_function" "rewrite_index" {
-  name    = "${replace(var.domain_name, ".", "-")}-rewrite-index"
+# One viewer-request function does two jobs:
+#
+#   1. Redirect www -> apex with a 301, so the canonical host is unambiguous.
+#      Doing it here rather than at Cloudflare keeps the behaviour with the
+#      distribution, so it holds regardless of how DNS is pointed.
+#   2. Rewrite directory-style routes. Astro emits /about/index.html, and
+#      CloudFront only resolves a default root object at the root, so /about
+#      would otherwise 404.
+resource "aws_cloudfront_function" "router" {
+  name    = "${replace(var.domain_name, ".", "-")}-router"
   runtime = "cloudfront-js-2.0"
-  comment = "Append index.html to directory-style requests"
+  comment = "www -> apex redirect and directory index rewrite"
   publish = true
 
   code = <<-JS
     function handler(event) {
       var request = event.request;
+      var host = request.headers.host ? request.headers.host.value : '';
       var uri = request.uri;
+
+      if (host === '${local.www_domain}') {
+        var qs = '';
+        for (var key in request.querystring) {
+          qs += (qs === '' ? '?' : '&') + key;
+          if (request.querystring[key].value !== '') {
+            qs += '=' + request.querystring[key].value;
+          }
+        }
+        return {
+          statusCode: 301,
+          statusDescription: 'Moved Permanently',
+          headers: {
+            location: { value: 'https://${var.domain_name}' + uri + qs },
+            'cache-control': { value: 'max-age=3600' }
+          }
+        };
+      }
 
       if (uri.endsWith('/')) {
         request.uri = uri + 'index.html';
@@ -96,7 +120,7 @@ resource "aws_cloudfront_distribution" "site" {
 
     function_association {
       event_type   = "viewer-request"
-      function_arn = aws_cloudfront_function.rewrite_index.arn
+      function_arn = aws_cloudfront_function.router.arn
     }
   }
 

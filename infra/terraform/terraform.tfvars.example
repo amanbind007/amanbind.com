@@ -1,6 +1,11 @@
 # Copy to terraform.tfvars and adjust. terraform.tfvars is gitignored.
 
 domain_name       = "amanbind.com"
+
+# Cloudflare account that owns the zone. The API token is NOT set here —
+# export it instead:  export CLOUDFLARE_API_TOKEN=...
+cloudflare_account_id = "your-cloudflare-account-id"
+
 region            = "ap-south-1"
 github_repository = "amanbind007/amanbind.com"
 github_branch     = "main"

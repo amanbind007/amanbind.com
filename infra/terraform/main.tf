@@ -13,9 +13,9 @@ locals {
 
 data "aws_caller_identity" "current" {}
 
-# Route 53 zone for the domain. Registered separately — this only reads it,
-# so Terraform never risks destroying the zone (and its NS delegation).
-data "aws_route53_zone" "primary" {
-  name         = var.domain_name
-  private_zone = false
+# The zone is managed outside this stack — it also carries the cloudflared
+# tunnel records for self-hosted services, so Terraform reads it rather than
+# owning it. Nothing here can destroy the zone or touch unrelated records.
+data "cloudflare_zone" "primary" {
+  name = var.domain_name
 }

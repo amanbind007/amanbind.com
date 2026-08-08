@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.60"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 4.40"
+    }
   }
 
   # Remote state. Create the bucket + lock table once, by hand or with a
@@ -35,3 +39,7 @@ provider "aws" {
     tags = local.tags
   }
 }
+
+# Credentials come from CLOUDFLARE_API_TOKEN in the environment.
+# Never commit the token — see README.
+provider "cloudflare" {}

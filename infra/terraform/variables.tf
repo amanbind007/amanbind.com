@@ -10,6 +10,11 @@ variable "region" {
   default     = "ap-south-1"
 }
 
+variable "cloudflare_account_id" {
+  description = "Cloudflare account that owns the zone."
+  type        = string
+}
+
 variable "github_repository" {
   description = "owner/repo allowed to assume the deploy role via GitHub OIDC."
   type        = string
@@ -35,7 +40,7 @@ variable "price_class" {
 }
 
 variable "tags" {
-  description = "Extra tags merged onto every resource."
+  description = "Extra tags merged onto every AWS resource."
   type        = map(string)
   default     = {}
 }

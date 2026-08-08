@@ -22,3 +22,8 @@ output "site_url" {
   description = "Public URL once DNS has propagated."
   value       = "https://${var.domain_name}"
 }
+
+output "cloudflare_zone_id" {
+  description = "Zone the DNS records were written into."
+  value       = data.cloudflare_zone.primary.id
+}
