@@ -1,0 +1,57 @@
+---
+title: "Artifact Management Platform Evaluation"
+category: "platform"
+period: "2025"
+summary: "Ran a POC comparing Artifactory OSS, Nexus OSS and the GitLab package registry, then standardised internal library and container distribution on GitLab CE."
+metrics:
+  - { value: "3", label: "Platforms evaluated" }
+  - { value: "0", label: "New services to operate" }
+stack: ["GitLab CE", "GitLab Package Registry", "GitLab Container Registry", "JFrog Artifactory OSS", "Sonatype Nexus OSS", "Docker", "Maven", "npm"]
+proprietary: true
+featured: true
+order: 88
+---
+
+## The problem
+
+Internal libraries and build artefacts were being passed around without a
+single authoritative source. If you wanted a shared library you asked someone
+for it, which makes versioning informal and provenance impossible to establish.
+
+We needed a real artifact repository: versioned internal libraries, container
+images, and a place for build output that the pipelines could publish to and
+deploy from.
+
+## The evaluation
+
+We ran a proof of concept against three open-source options.
+
+**JFrog Artifactory OSS** — the strongest product of the three on features and
+repository-type coverage. If we had been starting without an existing platform,
+this is what we would have picked.
+
+**Sonatype Nexus OSS** — capable and widely deployed, comparable in scope to
+Artifactory OSS for our needs.
+
+**GitLab package and container registry** — fewer features than either
+dedicated product, but already running.
+
+## Why GitLab won
+
+The deciding factor was not the feature comparison. Our code was already hosted
+on GitLab CE, and our CI already authenticated against it. Adopting a separate
+artifact platform would have meant another service to deploy, back up, patch,
+monitor, and integrate into the permission model — a second system to keep
+available, and a second place for access to drift out of sync with the first.
+
+Artifactory was the better product in isolation. GitLab was the better decision
+in context, because the operational cost of running one fewer service outweighed
+the feature gap for our workload.
+
+## Where it landed
+
+Internal libraries are published to the GitLab package registry and consumed by
+version from the pipelines. Container images go to the GitLab container
+registry. Authentication and project-level permissions come from the same
+GitLab groups that already control the source, so there is one access model
+rather than two.

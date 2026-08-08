@@ -1,0 +1,65 @@
+---
+title: "Database Access Governance & Analytics"
+category: "platform"
+period: "2025"
+summary: "Replaced direct developer database access with a governed Apache Superset layer across DEV, UAT and PROD — GitLab SSO, row-level security, query limits, and dashboards for management reporting."
+metrics:
+  - { value: "3", label: "Environments governed" }
+  - { value: "SSO", label: "GitLab-backed access" }
+  - { value: "RLS", label: "Row-level security" }
+stack: ["Apache Superset", "PostgreSQL", "GitLab OAuth", "SQLAlchemy", "Celery", "Docker", "RBAC"]
+proprietary: true
+featured: true
+order: 87
+---
+
+## The problem
+
+Developers connected to the databases directly, with credentials handed out
+individually. That caused a set of related problems:
+
+- **Connection exhaustion.** Enough developers holding open sessions to saturate
+  the connection pool, competing with the application itself.
+- **Accidental heavy queries.** Unbounded `SELECT`s and un-indexed joins run
+  without realising the cost, causing lock contention and slowing production
+  workloads.
+- **No audit trail.** No way to attribute a query to a person after the fact, so
+  no answer to who read which data and when.
+- **Standing access.** Credentials issued once and never revoked, so access
+  outlived the reason it was granted.
+- **Write access where read access would do.** Most people needed to look at
+  data, not change it, but the credentials rarely distinguished.
+
+Separately, management wanted visibility into database performance and usage
+statistics, which nobody could produce without going to a developer.
+
+## What we deployed
+
+Apache Superset in front of every environment — DEV, UAT and PROD — as the
+access layer, with authentication delegated to GitLab OAuth. Membership of the
+project group in GitLab determines who can reach Superset at all, so onboarding
+and offboarding follow the account lifecycle already in place instead of being
+a manual database task.
+
+Controls applied on top:
+
+- **Row-level security** so a user only sees the rows their role permits, rather
+  than filtering by convention.
+- **Row and output limits** on query results, so an unbounded query returns a
+  capped result set instead of pulling a table into memory.
+- **Query timeouts** with asynchronous execution through Celery, so a long
+  query is bounded and queued rather than holding a connection open.
+- **Read-only database roles** per environment behind the Superset connection,
+  with DML and DDL disabled in SQL Lab.
+- **Per-database access control**, so reaching production is a separate grant
+  from reaching DEV.
+
+## Reporting
+
+We built dashboards and charts covering the performance and usage metrics
+management asked for, and granted the relevant users the Gamma role — enough to
+view and explore the published dashboards, not enough to reach the underlying
+databases or author arbitrary SQL.
+
+The result is that database access is now a permission in one system with an
+audit trail, rather than a credential someone was given once.
