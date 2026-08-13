@@ -21,6 +21,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    outputs:
+      deployable: ${{ steps.gate.outputs.deployable }}
     steps:
       - uses: actions/checkout@v4
 
@@ -43,9 +45,38 @@ jobs:
           path: dist/
           retention-days: 7
 
+      # The site builds fine without any AWS setup. Until the infrastructure
+      # exists and the secrets are populated, skip the deploy rather than
+      # failing it — a red cross here would mean "the build is broken", which
+      # is not what an unconfigured deploy target means.
+      - name: Check deploy configuration
+        id: gate
+        env:
+          DEPLOY_ROLE: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          if [ -n "$DEPLOY_ROLE" ] && [ -n "$BUCKET" ] && [ -n "$DISTRIBUTION" ]; then
+            echo "deployable=true" >> "$GITHUB_OUTPUT"
+            echo "Deploy target configured." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "deployable=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Deploy skipped"
+              echo
+              echo "AWS deploy secrets are not set, so there is nothing to deploy to yet."
+              echo "Run \`terraform apply\` in \`infra/terraform\`, then set:"
+              echo
+              echo "- \`AWS_DEPLOY_ROLE_ARN\`"
+              echo "- \`AWS_S3_BUCKET\`"
+              echo "- \`AWS_CLOUDFRONT_DISTRIBUTION_ID\`"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   deploy:
     name: Deploy to S3 + CloudFront
     needs: build
+    if: needs.build.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     environment:
       name: production
