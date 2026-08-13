@@ -5,8 +5,9 @@ const year = new Date().getFullYear();
 const links = [
   { label: 'GitHub', href: site.socials.github },
   { label: 'LinkedIn', href: site.socials.linkedin },
+  { label: 'Goodreads', href: site.socials.goodreads },
   { label: 'Credly', href: site.socials.credly },
-  { label: 'Email', href: site.socials.email },
+  { label: 'Email', href: site.socials.emailAlt },
 ];
 ---
 
@@ -16,6 +17,8 @@ const links = [
       <p class="font-mono text-sm font-semibold" style="color: var(--c-text);">{site.name}</p>
       <p class="mt-2 text-sm" style="color: var(--c-text-faint);">{site.availability}</p>
       <p class="mt-4 text-sm" style="color: var(--c-text-dim);">
+        <a href={site.socials.emailAlt} class="underline underline-offset-4" style="color: var(--c-info);">{site.emailAlt}</a>
+        <span style="color: var(--c-text-faint);"> · </span>
         <a href={site.socials.email} class="underline underline-offset-4" style="color: var(--c-info);">{site.email}</a>
       </p>
     </div>

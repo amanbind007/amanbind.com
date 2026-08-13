@@ -36,7 +36,7 @@ const featured = (await getCollection('projects', ({ data }) => data.featured &&
       id="work"
       eyebrow="Experience"
       title="Where I've worked"
-      lede="Three years: a SwiftUI app for a client engagement, then release engineering for a 70+ microservice platform."
+      lede="Three years: a SwiftUI app for a client engagement, then release engineering for a 75+ microservice platform."
     />
     <div class="mt-10">
       <ExperienceTimeline />
@@ -117,9 +117,16 @@ const featured = (await getCollection('projects', ({ data }) => data.featured &&
 
       <div class="mt-8 flex flex-wrap gap-3">
         <a
-          href={site.socials.email}
+          href={site.socials.emailAlt}
           class="rounded-lg px-5 py-2.5 text-sm font-semibold"
           style="background: var(--c-accent); color: var(--c-bg-deep);"
+        >
+          {site.emailAlt}
+        </a>
+        <a
+          href={site.socials.email}
+          class="rounded-lg border px-5 py-2.5 text-sm font-medium"
+          style="border-color: var(--c-border-strong); color: var(--c-text-dim);"
         >
           {site.email}
         </a>
