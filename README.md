@@ -181,18 +181,14 @@ src/
 
 ## Outstanding
 
-- [ ] Export the current résumé to `public/resume.pdf`
 - [ ] Add `public/og.png` (1200×630) for link previews
-- [ ] Fill in the two missing Credly badge URLs (see the `TODO` comments in
-      `src/content/certifications/`) and confirm the exact title of the
-      Generative AI certification
-- [ ] Confirm the microservice count — the site says 70+, the current resume
-      says 150+
 - [ ] Add `public/apple-touch-icon.png`
+- [ ] Confirm the exact title of the Generative AI certification as it appears
+      on Credly
 - [ ] Review the homelab project page — it lists a plausible stack rather than
       a verified inventory
-
----
+- [ ] Prune anything in the GenAI / automation skill groups that isn't actually
+      in regular use
 
 ## License
 
