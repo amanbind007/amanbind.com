@@ -21,7 +21,7 @@ const maxStack = compact ? 4 : 6;
 ---
 
 <article
-  class="card card-hover group flex h-full flex-col p-6"
+  class="card card-hover group relative flex h-full flex-col p-6"
   data-category={d.category}
   data-featured={String(d.featured)}
 >
@@ -36,7 +36,7 @@ const maxStack = compact ? 4 : 6;
   </div>
 
   <h3 class="mt-4 text-lg font-semibold leading-snug" style="color: var(--c-text);">
-    <a href={`/projects/${project.id}`} class="after:absolute after:inset-0 relative">
+    <a href={`/projects/${project.id}`} class="after:absolute after:inset-0 after:content-['']">
       {d.title}
     </a>
   </h3>
