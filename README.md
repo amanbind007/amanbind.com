@@ -110,6 +110,9 @@ This provisions:
   validated through Cloudflare records
 - **Cloudflare** — `CNAME` records for apex and `www` pointing at the
   distribution, plus the ACM validation records
+- **Budgets** — a $5/month cost alert (50%, 100%, and forecast-100%). Steady
+  state for this site is $0; the alert is a tripwire, since CloudFront has no
+  spend cap
 - **IAM** — a GitHub OIDC provider and a deploy role scoped to
   `repo:amanbind007/amanbind.com:ref:refs/heads/main`, permitted only to write
   to the bucket and create invalidations

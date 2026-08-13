@@ -44,3 +44,15 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "monthly_budget_usd" {
+  description = "Monthly cost alert threshold. Expected steady state is $0 — this is a tripwire, not a target."
+  type        = string
+  default     = "5"
+}
+
+variable "budget_alert_email" {
+  description = "Where budget alerts are sent."
+  type        = string
+  default     = "amanbind007@gmail.com"
+}
