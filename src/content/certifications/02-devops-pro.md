@@ -2,7 +2,7 @@
 name: "AWS Certified DevOps Engineer"
 code: "DOP-C02"
 level: "Professional"
+credential: "https://www.credly.com/badges/e04b19b6-13ee-4583-b9a2-928a98c8c36f/public_url"
 order: 95
 ---
 
-<!-- TODO(aman): add the Credly badge URL for this one — it wasn't in the resume. -->
