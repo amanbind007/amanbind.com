@@ -3,11 +3,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { site } from '../data/site';
 import { arc, education } from '../data/skills';
+
+const connect = [
+  { label: 'GitHub', handle: '@amanbind007', href: site.socials.github },
+  { label: 'LinkedIn', handle: 'in/amanbind', href: site.socials.linkedin },
+  { label: 'Goodreads', handle: '/amanbind', href: site.socials.goodreads },
+  { label: 'Credly', handle: '6 AWS certs', href: site.socials.credly },
+  { label: 'Email', handle: site.emailAlt, href: site.socials.emailAlt },
+  { label: 'Email (alt)', handle: site.email, href: site.socials.email },
+  { label: 'Résumé', handle: 'PDF', href: site.resumePath },
+];
 ---
 
 <BaseLayout
   title="About"
-  description="How I went from shipping SwiftUI apps to owning release engineering for a 70+ microservice enterprise platform."
+  description="How I went from shipping SwiftUI apps to owning release engineering for a 75+ microservice enterprise platform."
 >
   <section class="shell pt-16 pb-12 sm:pt-24">
     <SectionHeading eyebrow="About" title="The longer version" />
@@ -15,73 +25,84 @@ import { arc, education } from '../data/skills';
     <div class="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem]">
       <div class="prose-body max-w-2xl">
         <p>
-          I'm a platform engineer in Bengaluru. I work on what sits between a
-          merged change and a running production service — pipelines,
-          environments, permissions, telemetry and reverts.
+          I'm Aman. I work on infrastructure at TCS in Bengaluru — pipelines,
+          deployments, databases, and the machinery that keeps the product
+          running.
         </p>
 
-        <h2>I started on the other side</h2>
+        <h2>Like a lot of people, I started as a developer</h2>
         <p>
-          My degree specialised in iOS development, and my first job was mobile:
-          a native SwiftUI iPad application that I built on my own for a client
-          engagement at TCS. It shipped in about two months. Once it was stable
-          and the enhancement queue emptied out, I picked up the AWS side of the
-          engagement because there was nothing else to do.
+          My degree had an iOS specialisation, so that's where I began. My first
+          project at TCS was a SwiftUI iPad app for a client. I built the whole
+          thing and it shipped in about two months.
         </p>
         <p>
-          I liked the infrastructure work more than the app work, so I asked to
-          move.
+          Then the feature requests dried up and someone handed me the AWS side
+          of the same engagement, mostly because there was nothing else for me to
+          do. That's the part that stuck. I asked to move.
         </p>
 
-        <h2>Platform Solutions</h2>
+        <h2>What happened after that</h2>
         <p>
           I joined the Platform Solutions unit expecting to build a mobile client
-          for <strong>TCS Enterprise Manager</strong>, an enterprise ITSM/ITOM
-          product. Budget constraints moved me into a DevOps role instead, around
-          the time the unit decided to modernise how it delivered software.
+          for TCS Enterprise Manager. Budget said otherwise, and I landed in a
+          DevOps role right as the unit decided to fix how it shipped software.
         </p>
         <p>
-          The starting point: 70+ microservices in SVN, a fixed weekly deployment
-          window, no review gate, no automated evaluation of a merge, and a revert
-          that took about an hour of manual work. Two of us were asked to change
-          that.
+          What we walked into: 75+ microservices sitting in SVN, deployments
+          every Thursday, no review gate, and a revert that took an hour of
+          careful manual work. Two of us were told to sort it out.
         </p>
         <p>
-          Most of the first stretch went on writing down the delivery model rather
-          than building pipelines — what branches mean, what a merge has to pass,
-          how environments get promoted, who can deploy where. The pipelines came
-          after, as an implementation of that document.
+          We spent longer than anyone expected just writing down how delivery
+          should work before touching Jenkins. Which branches mean what. What a
+          merge has to pass. Who's allowed to deploy to prod. It felt slow at the
+          time. It was the right call, because every pipeline after that was just
+          implementing the document.
         </p>
         <p>
-          The revert pipeline turned out to matter more than the deploy pipeline.
-          Once a revert took under thirty seconds instead of an hour, the team
-          stopped saving changes for the Thursday window and started deploying
-          when things were ready.
+          The revert pipeline is the bit I'm proudest of. Getting it under thirty
+          seconds is what actually changed how people behaved — once undoing a
+          release stopped being frightening, nobody wanted to wait for Thursday
+          any more.
+        </p>
+        <p>
+          Since then it's mostly been databases and access. Superset in front of
+          DEV, UAT and prod so nobody needs raw credentials. Bytebase handing out
+          logins that expire on their own. An artifact registry decision I'd
+          happily defend in an interview. A lot of Terraform.
         </p>
 
-        <h2>What I work on now</h2>
+        <h2>Books</h2>
         <p>
-          Mostly the overlap between platform, security and reliability — the OSS
-          licence audit, the policy-as-code deployment permissions, and the
-          database access governance work all came out of the same stretch.
+          I read constantly, and it's the fastest way to get a sense of how I
+          think. Mostly non-fiction and systems writing, with science fiction
+          when I want to stop thinking about work entirely.
+          My <a href={site.socials.goodreads} target="_blank" rel="noopener">Goodreads</a> is
+          public — what I'm reading now, what I've finished, and what I gave up
+          on. If you're hiring, it'll tell you more than a skills list will. If
+          you just want a recommendation, I always have one.
+        </p>
+
+        <h2>The homelab</h2>
+        <p>
+          I self-host more than is strictly reasonable. Identity, reverse proxy,
+          search, monitoring, media, all sitting behind Cloudflare tunnels with
+          the config in version control. Most of it exists because I wanted to
+          understand something properly, and breaking it at home costs a lot less
+          than breaking it at work.
         </p>
         <p>
-          I also self-host a fair amount at home. Running an identity provider, a
-          reverse proxy and a search cluster yourself teaches you things quickly,
-          and several things I've since deployed at work I broke at home first.
-        </p>
-        <p>
-          I still write Swift, and I'm currently building the product's Flutter
-          client, so the mobile side hasn't gone away. It just isn't the main
-          thing any more.
+          I'm writing Flutter for the product's mobile client at the moment, so I
+          haven't entirely left app development behind.
         </p>
 
         <hr class="hair my-10" />
 
+        <h2>Come say hello</h2>
         <p>
-          If you're hiring for platform, DevSecOps, SRE or cloud architecture
-          work — or want to compare homelab notes —
-          <a href={site.socials.email}>{site.email}</a>.
+          I'm open to DevOps, SRE, platform and cloud architecture roles. I'm
+          also happy to talk about self-hosting setups, or argue about books.
         </p>
       </div>
 
@@ -117,12 +138,22 @@ import { arc, education } from '../data/skills';
         </div>
 
         <div class="card p-5">
-          <h2 class="font-mono text-xs uppercase tracking-[0.12em]" style="color: var(--c-text-faint);">Elsewhere</h2>
-          <ul class="mt-3 space-y-2 text-sm">
-            <li><a href={site.socials.github} target="_blank" rel="noopener" style="color: var(--c-info);">GitHub ↗</a></li>
-            <li><a href={site.socials.linkedin} target="_blank" rel="noopener" style="color: var(--c-info);">LinkedIn ↗</a></li>
-            <li><a href={site.socials.credly} target="_blank" rel="noopener" style="color: var(--c-info);">Credly ↗</a></li>
-            <li><a href={site.resumePath} style="color: var(--c-info);">Résumé (PDF)</a></li>
+          <h2 class="font-mono text-xs uppercase tracking-[0.12em]" style="color: var(--c-text-faint);">Connect &amp; follow</h2>
+          <ul class="mt-3 space-y-2.5 text-sm">
+            {connect.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  target={item.href.startsWith('mailto:') ? undefined : '_blank'}
+                  rel="noopener"
+                  class="group flex items-baseline justify-between gap-3 transition-colors"
+                  style="color: var(--c-text-dim);"
+                >
+                  <span class="font-medium" style="color: var(--c-info);">{item.label}</span>
+                  <span class="font-mono text-[0.68rem]" style="color: var(--c-text-faint);">{item.handle}</span>
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </aside>

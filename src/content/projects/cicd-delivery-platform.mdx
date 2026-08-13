@@ -1,12 +1,12 @@
 ---
-title: "CI/CD Delivery Platform for 70+ Microservices"
+title: "CI/CD Delivery Platform for 75+ Microservices"
 category: "platform"
 period: "2024 — Present"
 summary: "Replaced a manual SVN release process with a Jenkins and GitLab pipeline suite covering build, merge evaluation, deployment, backup and sub-minute revert."
 metrics:
   - { value: "60m → 10m", label: "Deploy downtime" }
   - { value: "60m → <30s", label: "Revert time" }
-  - { value: "70+", label: "Microservices" }
+  - { value: "75+", label: "Microservices" }
   - { value: "Weekly → on-demand", label: "Release cadence" }
 stack: ["Jenkins", "GitLab CE", "Groovy", "Docker", "Ansible", "Bash", "YAML"]
 proprietary: true
@@ -16,7 +16,7 @@ order: 100
 
 ## The situation
 
-TCS Enterprise Manager is a large ITSM/ITOM platform: 70+ backend microservices
+TCS Enterprise Manager is a large ITSM/ITOM platform: 75+ backend microservices
 and five-plus frontends written against different frameworks. When I joined the
 team, all of it lived in SVN and shipped by hand.
 
