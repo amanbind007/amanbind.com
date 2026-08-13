@@ -49,6 +49,8 @@ const certifications = defineCollection({
     issuer: z.string().default('Amazon Web Services'),
     level: z.enum(['Professional', 'Specialty', 'Associate', 'Foundational']),
     credential: z.string().url().optional(),
+    /** As shown on Credly. AWS certifications run three years from issue. */
+    expires: z.string().optional(),
     order: z.number(),
   }),
 });

@@ -38,9 +38,13 @@ const levelStyle: Record<string, string> = {
 
           <p class="mt-3 flex-1 text-sm font-medium leading-snug" style="color: var(--c-text);">{c.name}</p>
 
-          <p class="mt-3 flex items-center gap-1.5 font-mono text-[0.68rem]"
-             style={`color: ${c.credential ? 'var(--c-info)' : 'var(--c-text-faint)'};`}>
-            {c.credential ? 'Verify on Credly ↗' : 'Credential link pending'}
+          <p class="mt-3 flex items-center justify-between gap-2 font-mono text-[0.68rem]">
+            <span style={`color: ${c.credential ? 'var(--c-info)' : 'var(--c-text-faint)'};`}>
+              {c.credential ? 'Verify on Credly ↗' : 'Credential link pending'}
+            </span>
+            {c.expires && (
+              <span style="color: var(--c-text-faint);">valid to {c.expires}</span>
+            )}
           </p>
         </Tag>
       </li>
