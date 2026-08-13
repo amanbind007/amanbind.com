@@ -1,0 +1,48 @@
+---
+title: "Self-Hosted Services Behind Cloudflare"
+category: "cloud"
+period: "Ongoing"
+summary: "My personal services run at home and reach the internet through Cloudflare Tunnels — no port forwarding, no public IP exposure, and no inbound firewall rules."
+metrics:
+  - { value: "0", label: "Ports forwarded" }
+  - { value: "0", label: "Inbound rules" }
+  - { value: "Origin", label: "IP never exposed" }
+stack: ["Cloudflare Tunnels", "cloudflared", "Cloudflare DNS", "Cloudflare Access", "Caddy", "Docker", "Keycloak"]
+featured: true
+order: 76
+---
+
+## Why tunnels
+
+The usual way to expose something running at home is to forward a port and hope.
+That publishes your residential IP, puts an open port in front of whatever is
+listening, and means a misconfigured service is directly reachable from the
+internet.
+
+Cloudflare Tunnels invert it. `cloudflared` runs next to the service and makes
+an **outbound** connection to Cloudflare's edge. Traffic arrives at Cloudflare
+and is handed back down that existing connection. There is no inbound firewall
+rule, no forwarded port, and the origin address is never published — each
+service is reached through a `CNAME` to a tunnel identifier rather than an
+address.
+
+## How it is arranged
+
+Each service gets its own hostname on the zone, pointed at the tunnel. DNS,
+TLS termination and the public entry point all sit at Cloudflare, while the
+services themselves stay on the internal network behind a local reverse proxy.
+
+Authentication is the part worth getting right. Anything that should not be
+world-readable sits behind an identity check rather than relying on the service
+having good auth of its own, so the exposure surface is one well-understood
+front door instead of one per application.
+
+## What it pairs with
+
+The same zone carries mail routing for the domain and the DNS for my
+AWS-hosted sites, so one control plane covers the public surface of everything
+I run, whether the origin is a container in my house or an S3 bucket in
+`ap-south-1`.
+
+> The service inventory itself is on the [homelab page](/projects/homelab) —
+> this one is about how any of it is reachable.

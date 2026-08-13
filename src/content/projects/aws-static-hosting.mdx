@@ -1,0 +1,56 @@
+---
+title: "Websites on AWS, Delivered from the Edge"
+category: "cloud"
+period: "2026"
+summary: "This site and my other static properties run on private S3 origins behind CloudFront, with TLS from ACM, DNS in Cloudflare, and the whole stack described in Terraform."
+metrics:
+  - { value: "0", label: "Public buckets" }
+  - { value: "0", label: "Long-lived CI keys" }
+  - { value: "IaC", label: "Fully reproducible" }
+stack: ["AWS S3", "CloudFront", "ACM", "Terraform", "GitHub Actions", "OIDC", "CloudFront Functions", "Cloudflare DNS"]
+repo: "https://github.com/amanbind007/amanbind.com"
+featured: true
+order: 78
+---
+
+## The setup
+
+Static sites are the cheapest possible place to be strict about architecture,
+so I treated this one the way I would treat something at work.
+
+**Private origin.** The S3 bucket has no website endpoint, no public ACLs, and a
+policy that only permits CloudFront to read it, scoped by a `SourceArn`
+condition on the distribution. Versioning is on, encryption is on, and a
+lifecycle rule expires noncurrent versions after 30 days so a rollback window
+does not turn into a storage bill.
+
+**TLS and the edge.** ACM issues the certificate in `us-east-1`, which is where
+CloudFront requires it regardless of where the rest of the stack lives. A
+viewer-request CloudFront Function does two jobs: it 301s `www` to the apex so
+the canonical host is unambiguous, and it rewrites directory-style routes,
+because CloudFront only resolves a default root object at the root and `/about`
+would otherwise 404.
+
+**DNS.** Cloudflare, with the records DNS-only. CloudFront already terminates
+TLS and acts as the CDN — proxying through Cloudflare on top would mean two
+caches to invalidate and a re-origination on every miss.
+
+## Deployment
+
+GitHub Actions builds and deploys on push to `main`, authenticating through
+OIDC. There are no long-lived AWS keys in repository secrets; the workflow
+exchanges its GitHub identity token for a role whose trust policy pins the
+subject to one branch of one repository, rather than the `repo:owner/*`
+wildcard most examples reach for.
+
+The sync runs in two passes. Fingerprinted assets go up first with
+`max-age=31536000,immutable`, then HTML with `must-revalidate`. Ordering
+matters: it guarantees no visitor is served a page referencing an asset that
+has not landed yet.
+
+## Why Terraform
+
+Because the interesting part of a personal site is not the site. Every piece of
+this — bucket, distribution, certificate, DNS records, IAM role and its trust
+policy — is in version control, and a plan tells me exactly what would change
+before it changes.
