@@ -33,11 +33,24 @@ data "aws_iam_policy_document" "github_assume_role" {
       values   = ["sts.amazonaws.com"]
     }
 
-    # Scoped to one branch of one repository, not "repo:owner/*".
+    # Scoped to one repository, not "repo:owner/*".
+    #
+    # Two subjects are permitted because GitHub rewrites the `sub` claim when a
+    # job references an environment: a job with `environment: production` gets
+    # `...:environment:production`, NOT `...:ref:refs/heads/main`. The deploy
+    # job uses the environment, so without the first entry it can never
+    # authenticate.
+    #
+    # The environment subject does not by itself pin a branch, so the
+    # `production` environment carries a deployment-branch policy restricting
+    # it to `main`. That is what keeps this from widening to any branch.
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.github_repository}:ref:refs/heads/${var.github_branch}"]
+      values = [
+        "repo:${var.github_repository}:environment:${var.github_environment}",
+        "repo:${var.github_repository}:ref:refs/heads/${var.github_branch}",
+      ]
     }
   }
 }

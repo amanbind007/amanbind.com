@@ -56,3 +56,9 @@ variable "budget_alert_email" {
   type        = string
   default     = "amanbind007@gmail.com"
 }
+
+variable "github_environment" {
+  description = "GitHub Actions environment used by the deploy job. Its deployment-branch policy must be restricted to github_branch."
+  type        = string
+  default     = "production"
+}
