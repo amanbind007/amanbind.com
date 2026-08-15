@@ -6,9 +6,10 @@ import { site } from '../data/site';
 
 <section class="relative overflow-hidden">
   <div class="grid-veil pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
+  {/* Gradient rather than a blurred circle — see the note in index.astro. */}
   <div
-    class="pointer-events-none absolute left-1/2 top-0 -z-10 h-[28rem] w-[52rem] -translate-x-1/2 rounded-full blur-3xl"
-    style="background: var(--c-glow); opacity: 0.5;"
+    class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[32rem]"
+    style="background: radial-gradient(48% 72% at 50% 0%, var(--c-glow) 0%, transparent 72%);"
     aria-hidden="true"
   ></div>
 

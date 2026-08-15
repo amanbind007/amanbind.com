@@ -101,9 +101,18 @@ const featured = (await getCollection('projects', ({ data }) => data.featured &&
       class="scroll-reveal relative overflow-hidden rounded-2xl border p-8 sm:p-14"
       style="border-color: var(--c-border-strong); background: var(--c-surface);"
     >
+      {/*
+        A radial gradient rather than a blurred circle. The card is
+        overflow-hidden, and `filter: blur()` renders to a bitmap whose soft
+        falloff extends past the element box — clipping that produces a hard
+        straight edge. It was intermittent because `scroll-reveal` animates
+        transform, promoting the card to a composite layer and re-rasterizing
+        the blur at a different offset. A gradient is already transparent at
+        its edges, so there is nothing to clip, and it skips the filter pass.
+      */}
       <div
-        class="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full blur-3xl"
-        style="background: var(--c-glow);"
+        class="pointer-events-none absolute inset-0"
+        style="background: radial-gradient(55% 70% at 100% 0%, var(--c-glow) 0%, transparent 70%);"
         aria-hidden="true"
       ></div>
 
