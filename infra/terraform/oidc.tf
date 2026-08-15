@@ -33,21 +33,28 @@ data "aws_iam_policy_document" "github_assume_role" {
       values   = ["sts.amazonaws.com"]
     }
 
-    # Scoped to one repository, not "repo:owner/*".
+    # GitHub now issues *immutable* subject claims: the owner and repository
+    # names carry their numeric IDs, e.g.
+    #   repo:amanbind007@75306571/amanbind.com@1333547611:environment:production
+    # rather than the widely-documented
+    #   repo:amanbind007/amanbind.com:environment:production
     #
-    # Two subjects are permitted because GitHub rewrites the `sub` claim when a
-    # job references an environment: a job with `environment: production` gets
-    # `...:environment:production`, NOT `...:ref:refs/heads/main`. The deploy
-    # job uses the environment, so without the first entry it can never
-    # authenticate.
+    # The IDs are pinned deliberately rather than wildcarded — resistance to
+    # name reuse is the entire point of the immutable format, and
+    # "owner@*/repo@*" would throw that away. Both forms are listed so a
+    # rollout in either direction keeps working.
     #
-    # The environment subject does not by itself pin a branch, so the
-    # `production` environment carries a deployment-branch policy restricting
-    # it to `main`. That is what keeps this from widening to any branch.
+    # Two subject shapes per format, because GitHub rewrites `sub` when a job
+    # references an environment: `environment:<name>` replaces
+    # `ref:refs/heads/<branch>`. The deploy job uses an environment; the
+    # environment itself is restricted to `github_branch`, which is what keeps
+    # the environment subject from being claimable off any branch.
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
       values = [
+        "repo:${var.github_owner}@${var.github_owner_id}/${var.github_repo_name}@${var.github_repo_id}:environment:${var.github_environment}",
+        "repo:${var.github_owner}@${var.github_owner_id}/${var.github_repo_name}@${var.github_repo_id}:ref:refs/heads/${var.github_branch}",
         "repo:${var.github_repository}:environment:${var.github_environment}",
         "repo:${var.github_repository}:ref:refs/heads/${var.github_branch}",
       ]

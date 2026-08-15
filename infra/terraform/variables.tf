@@ -62,3 +62,27 @@ variable "github_environment" {
   type        = string
   default     = "production"
 }
+
+variable "github_owner" {
+  description = "GitHub account that owns the repository."
+  type        = string
+  default     = "amanbind007"
+}
+
+variable "github_owner_id" {
+  description = "Numeric GitHub account ID, used in the immutable OIDC subject claim. `gh api /users/<owner> --jq .id`"
+  type        = string
+  default     = "75306571"
+}
+
+variable "github_repo_name" {
+  description = "Repository name without the owner prefix."
+  type        = string
+  default     = "amanbind.com"
+}
+
+variable "github_repo_id" {
+  description = "Numeric repository ID, used in the immutable OIDC subject claim. `gh api /repos/<owner>/<repo> --jq .id`"
+  type        = string
+  default     = "1333547611"
+}
