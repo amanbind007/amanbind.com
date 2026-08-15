@@ -30,6 +30,16 @@ resource "cloudflare_record" "www" {
   comment = "Redirects to apex via CloudFront function (managed by Terraform)"
 }
 
+resource "cloudflare_record" "bio" {
+  zone_id = data.cloudflare_zone.primary.id
+  name    = "bio"
+  type    = "CNAME"
+  content = aws_cloudfront_distribution.site.domain_name
+  proxied = false
+  ttl     = 1
+  comment = "Legacy host — 301s to apex via CloudFront function (managed by Terraform)"
+}
+
 # ---------------------------------------------------------------------------
 # ACM DNS validation records
 # ---------------------------------------------------------------------------

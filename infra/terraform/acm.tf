@@ -2,7 +2,7 @@ resource "aws_acm_certificate" "site" {
   provider = aws.us_east_1
 
   domain_name               = var.domain_name
-  subject_alternative_names = [local.www_domain]
+  subject_alternative_names = local.alias_domains
   validation_method         = "DNS"
 
   lifecycle {

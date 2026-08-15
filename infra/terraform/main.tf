@@ -1,6 +1,14 @@
 locals {
   www_domain = "www.${var.domain_name}"
 
+  # Legacy hostname. It briefly served a self-hosted page and went out on job
+  # applications, so it has to keep resolving — it 301s to the apex.
+  bio_domain = "bio.${var.domain_name}"
+
+  # Everything the distribution answers for. Only the apex serves content;
+  # the rest redirect.
+  alias_domains = [local.www_domain, local.bio_domain]
+
   tags = merge(
     {
       Project   = "amanbind.com"

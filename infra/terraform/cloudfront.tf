@@ -17,7 +17,7 @@ resource "aws_cloudfront_origin_access_control" "site" {
 resource "aws_cloudfront_function" "router" {
   name    = "${replace(var.domain_name, ".", "-")}-router"
   runtime = "cloudfront-js-2.0"
-  comment = "www -> apex redirect and directory index rewrite"
+  comment = "alias -> apex redirect and directory index rewrite"
   publish = true
 
   code = <<-JS
@@ -26,7 +26,10 @@ resource "aws_cloudfront_function" "router" {
       var host = request.headers.host ? request.headers.host.value : '';
       var uri = request.uri;
 
-      if (host === '${local.www_domain}') {
+      // Any hostname other than the apex is an alias: www, the legacy bio
+      // host, or the distribution's own *.cloudfront.net name. All of them
+      // 301 to the canonical apex so there is exactly one indexable origin.
+      if (host !== '' && host !== '${var.domain_name}') {
         var qs = '';
         for (var key in request.querystring) {
           qs += (qs === '' ? '?' : '&') + key;
@@ -98,7 +101,7 @@ resource "aws_cloudfront_distribution" "site" {
   comment             = "${var.domain_name} static site"
   default_root_object = "index.html"
   price_class         = var.price_class
-  aliases             = [var.domain_name, local.www_domain]
+  aliases             = concat([var.domain_name], local.alias_domains)
 
   origin {
     origin_id                = "s3-${aws_s3_bucket.site.id}"
