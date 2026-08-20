@@ -27,7 +27,7 @@ export const site = {
   socials: {
     github: 'https://github.com/amanbind007',
     linkedin: 'https://www.linkedin.com/in/amanbind',
-    credly: 'https://www.credly.com/users/amanbind007',
+    credly: 'https://www.credly.com/users/aman.bind',
     goodreads: 'https://www.goodreads.com/amanbind',
     email: 'mailto:amanbind007@gmail.com',
     emailAlt: 'mailto:itsme@amanbind.com',
